@@ -14,12 +14,12 @@
    <children>
       <HBox prefHeight="153.0" prefWidth="571.0" spacing="50.0">
          <children>
-            <TextField alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="377.0" promptText="Sök på bok" snapToPixel="false">
+            <TextField fx:id="searchBox" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="377.0" promptText="Sök på bok" snapToPixel="false">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Sök">
+            <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#updateSearch" prefHeight="25.0" prefWidth="86.0" text="Sök">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
