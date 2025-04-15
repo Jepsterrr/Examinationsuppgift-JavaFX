@@ -11,6 +11,12 @@ public class MainViewController {
     private Label statusLabel;
 
     @FXML
+    private void searchButton() throws IOException {
+        App.setRoot("search");
+    }
+
+
+    @FXML
     private void handleLogin() {
         statusLabel.setText("Du är inloggad!");
     }
