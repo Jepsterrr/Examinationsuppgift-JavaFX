@@ -1,4 +1,4 @@
-package org.openjfx;
+package org.openjfx.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

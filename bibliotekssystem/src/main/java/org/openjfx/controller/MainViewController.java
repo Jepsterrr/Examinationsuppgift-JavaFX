@@ -1,6 +1,8 @@
-package org.openjfx;
+package org.openjfx.controller;
 
 import java.io.IOException;
+
+import org.openjfx.App;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,8 +19,8 @@ public class MainViewController {
 
 
     @FXML
-    private void handleLogin() {
-        statusLabel.setText("Du är inloggad!");
+    private void handleLogin() throws IOException{
+        App.setRoot("LogInView");
     }
 
     @FXML

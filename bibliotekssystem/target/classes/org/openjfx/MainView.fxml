@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.MainViewController">
+<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.MainViewController">
     <!-- NavBar -->
     <top>
         <HBox alignment="CENTER" spacing="350.0" style="-fx-background-color: #2C3E50; -fx-padding: 20;">
@@ -77,11 +77,4 @@
          </children>
         </VBox>
     </center>
-    
-    <!-- Statusfält -->
-    <bottom>
-        <HBox alignment="CENTER" style="-fx-background-color: #BDC3C7; -fx-padding: 10 10 10 10;">
-            <Label fx:id="statusLabel" style="-fx-font-size: 14px;" text="" />
-        </HBox>
-    </bottom>
 </BorderPane>
