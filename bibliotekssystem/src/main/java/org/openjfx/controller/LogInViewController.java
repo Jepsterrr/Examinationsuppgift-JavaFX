@@ -6,6 +6,8 @@ import org.openjfx.App;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class LogInViewController {
 
@@ -13,12 +15,25 @@ public class LogInViewController {
     private Label statusLabel;
 
     @FXML
+    private TextField usernameField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
     private void pressHome() throws IOException {
         App.setRoot("MainView");
     }
 
     @FXML
-    private void testLogIn() {
+    private void tryLogIn() {
         statusLabel.setText("Du har tryckt på knappen!");
+
+        if (usernameField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
+            statusLabel.setText("Inloggning försöktes!");
+        }
+        else {
+            statusLabel.setText("Fyll i användarnamn och lösenord!");
+        }
     }
 }

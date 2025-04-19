@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -27,23 +28,17 @@
                 <Insets bottom="30" left="30" right="30" top="30" />
             </padding>
          <children>
-            <AnchorPane prefHeight="255.0" prefWidth="760.0">
+            <AnchorPane prefHeight="403.0" prefWidth="760.0">
                <children>
-                  <TextField fx:id="username" layoutX="306.0" layoutY="47.0" prefWidth="150.0" />
-                  <TextField fx:id="password" layoutX="307.0" layoutY="115.0" />
-                  <Label layoutX="307.0" layoutY="22.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Användarnamn" />
-                  <Label layoutX="307.0" layoutY="90.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Lösenord" />
-                  <Button layoutX="340.0" layoutY="180.0" onAction="#testLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+                  <TextField fx:id="usernameField" layoutX="306.0" layoutY="115.0" prefWidth="150.0" />
+                  <Label layoutX="307.0" layoutY="90.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Användarnamn" />
+                  <Label layoutX="307.0" layoutY="155.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Lösenord" />
+                  <Button layoutX="340.0" layoutY="232.0" onAction="#tryLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+                  <PasswordField fx:id="passwordField" layoutX="306.0" layoutY="180.0" />
+                     <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="201.0" layoutY="24.0" prefHeight="25.0" prefWidth="358.0" style="-fx-font-size: 16px;" text="" />
                </children>
             </AnchorPane>
          </children>
         </VBox>
     </center>
-    
-    <!-- Statusfält -->
-    <bottom>
-        <HBox alignment="CENTER" style="-fx-background-color: #BDC3C7; -fx-padding: 10 10 10 10;">
-            <Label fx:id="statusLabel" style="-fx-font-size: 14px;" text="" />
-        </HBox>
-    </bottom>
 </BorderPane>
