@@ -13,18 +13,18 @@ public class MainViewController {
     private Label statusLabel;
 
     @FXML
-    private void searchButton() throws IOException {
+    private void btnSearch() throws IOException {
         App.setRoot("search");
     }
 
 
     @FXML
-    private void handleLogin() throws IOException{
+    private void btnLogin() throws IOException{
         App.setRoot("LogInView");
     }
 
     @FXML
-    private void pressHome() throws IOException {
+    private void btnHome() throws IOException {
         App.setRoot("MainView");
     }
 

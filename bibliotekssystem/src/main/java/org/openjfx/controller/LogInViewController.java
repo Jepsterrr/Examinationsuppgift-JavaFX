@@ -21,12 +21,12 @@ public class LogInViewController {
     private PasswordField passwordField;
 
     @FXML
-    private void pressHome() throws IOException {
+    private void btnHome() throws IOException {
         App.setRoot("MainView");
     }
 
     @FXML
-    private void tryLogIn() {
+    private void btnLogIn() {
         statusLabel.setText("Du har tryckt på knappen!");
 
         if (usernameField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {

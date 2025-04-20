@@ -12,9 +12,9 @@
     <!-- NavBar -->
     <top>
         <HBox alignment="CENTER" spacing="350.0" style="-fx-background-color: #2C3E50; -fx-padding: 20;">
-         <Button onAction="#pressHome" style="-fx-font-size: 28px; -fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-weight: bold;" text="Universitetsbibliotek" />
+         <Button onAction="#btnHome" style="-fx-font-size: 28px; -fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-weight: bold;" text="Universitetsbibliotek" />
 
-            <Button onAction="#handleLogin" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+            <Button onAction="#btnLogin" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -30,7 +30,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="420.0" prefWidth="760.0" spacing="100.0">
                <children>
-                  <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#searchButton" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Sök">
+                  <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnSearch" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Sök">
                      <graphic>
                         <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
                            <children>

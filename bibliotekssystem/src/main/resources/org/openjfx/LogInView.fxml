@@ -14,7 +14,7 @@
     <!-- NavBar -->
     <top>
         <HBox alignment="CENTER" spacing="350.0" style="-fx-background-color: #2C3E50; -fx-padding: 20;">
-         <Button onAction="#pressHome" style="-fx-font-size: 28px; -fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-weight: bold;" text="Universitetsbibliotek" />
+         <Button onAction="#btnHome" style="-fx-font-size: 28px; -fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-weight: bold;" text="Universitetsbibliotek" />
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -33,7 +33,7 @@
                   <TextField fx:id="usernameField" layoutX="306.0" layoutY="115.0" prefWidth="150.0" />
                   <Label layoutX="307.0" layoutY="90.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Användarnamn" />
                   <Label layoutX="307.0" layoutY="155.0" prefHeight="20.0" prefWidth="150.0" style="-fx-font-size: 16px;" text="Lösenord" />
-                  <Button layoutX="340.0" layoutY="232.0" onAction="#tryLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+                  <Button layoutX="340.0" layoutY="232.0" onAction="#btnLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
                   <PasswordField fx:id="passwordField" layoutX="306.0" layoutY="180.0" />
                      <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="201.0" layoutY="24.0" prefHeight="25.0" prefWidth="358.0" style="-fx-font-size: 16px;" text="" />
                </children>
