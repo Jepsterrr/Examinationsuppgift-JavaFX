@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -14,7 +16,14 @@
         <HBox alignment="CENTER" spacing="350.0" style="-fx-background-color: #2C3E50; -fx-padding: 20;">
          <Button onAction="#btnHome" style="-fx-font-size: 28px; -fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-weight: bold;" text="Universitetsbibliotek" />
 
-            <Button onAction="#btnLogin" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+         <Button fx:id="logInButton" onAction="#btnLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
+
+         <MenuButton fx:id="logInButtonMenu" text="Inloggad" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" visible="false" managed="false">
+            <items>
+               <MenuItem text="Logga ut" onAction="#handleLogout"/>
+            </items>
+         </MenuButton>
+
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -54,14 +63,14 @@
                         </Pane>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#pressButton" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Button">
+                  <Button fx:id="profileButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnProfile" prefHeight="150.0" prefWidth="150.0" visible="false" managed="false" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Profil">
                      <graphic>
                         <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                            <children>
-                              <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Sök på tillgängligt material som finns i biblioteket" wrapText="true" />
+                              <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Gå till din profil" wrapText="true" />
                            </children>
                         </Pane>
                      </graphic>

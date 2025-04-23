@@ -26,11 +26,14 @@ public class LogInViewController {
     }
 
     @FXML
-    private void btnLogIn() {
+    private void btnLogIn() throws IOException {
         statusLabel.setText("Du har tryckt på knappen!");
 
         if (usernameField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
-            statusLabel.setText("Inloggning försöktes!");
+            App.setRoot("MainView");
+            MainViewController mvc = (MainViewController) App.getController();
+            mvc.handleLogIn();
+            statusLabel.setText("Inloggning lyckades!");
         }
         else {
             statusLabel.setText("Fyll i användarnamn och lösenord!");

@@ -36,6 +36,7 @@
                   <Button layoutX="340.0" layoutY="232.0" onAction="#btnLogIn" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Logga in" />
                   <PasswordField fx:id="passwordField" layoutX="306.0" layoutY="180.0" />
                      <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="201.0" layoutY="24.0" prefHeight="25.0" prefWidth="358.0" style="-fx-font-size: 16px;" text="" />
+                  <Button layoutX="346.0" layoutY="290.0" onAction="#btnHome" style="-fx-font-size: 16px; -fx-background-color: #3498DB; -fx-text-fill: white;" text="Avbryt" />
                </children>
             </AnchorPane>
          </children>

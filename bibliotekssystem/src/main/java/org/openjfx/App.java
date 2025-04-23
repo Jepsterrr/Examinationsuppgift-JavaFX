@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene scene;
+    private static FXMLLoader fxmlLoader;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -23,12 +24,16 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    public static Object getController() {
+        return fxmlLoader.getController();
     }
 
     public static void main(String[] args) {
