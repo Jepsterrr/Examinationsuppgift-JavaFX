@@ -5,12 +5,17 @@ public class Book {
     private int titleId;
     private String title;
     private String isbn;
+    private int numberOfPages;
+    private int publisherId;
     private boolean onLoan;
 
-    public Book(int titleId, String title, String isbn, boolean onLoan) {
+    public Book(int titleId, String title, String isbn, int numberOfPages, int publisherId, boolean onLoan) {
         this.titleId = titleId;
         this.title = title;
+        this.numberOfPages = numberOfPages;
+        this.publisherId = publisherId;
         this.isbn = isbn;
+
         this.onLoan = onLoan;
     }
 
@@ -36,6 +41,22 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public void setNumberOfPages(int numberOfPages) {
+        this.numberOfPages = numberOfPages;
+    }
+
+    public int getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(int publisherId) {
+        this.publisherId = publisherId;
     }
 
     public boolean isOnLoan() {
