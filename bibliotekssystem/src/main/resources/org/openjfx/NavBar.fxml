@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.openjfx.controller.NavBarController"
+      spacing="350" style="-fx-background-color: #2C3E50; -fx-padding: 20;"
+      alignment="CENTER" prefWidth="820">
+  
+  <Button text="Universitetsbibliotek"
+          style="-fx-font-size:28px; -fx-background-color:#2C3E50; -fx-text-fill:white; -fx-font-weight:bold;"
+          onAction="#btnHome"/>
+
+  <Button fx:id="logInButton"
+          text="Logga in"
+          style="-fx-font-size:16px; -fx-background-color:#3498DB; -fx-text-fill:white;"
+          onAction="#btnLogIn"/>
+
+  <MenuButton fx:id="logInMenu"
+              text="Inloggad"
+              style="-fx-font-size:16px; -fx-background-color:#3498DB; -fx-text-fill:white;"
+              visible="false" managed="false">
+    <items>
+      <MenuItem text="Logga ut" onAction="#handleLogout"/>
+    </items>
+  </MenuButton>
+
+</HBox>

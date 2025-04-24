@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="611.0" spacing="20.0" style="-fx-background-color: #f2f2f2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.SearchController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-   <children>
-      <HBox prefHeight="153.0" prefWidth="571.0" spacing="50.0">
-         <children>
-            <TextField fx:id="searchBox" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="377.0" promptText="Sök på bok" snapToPixel="false">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </TextField>
-            <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#updateSearch" prefHeight="25.0" prefWidth="86.0" text="Sök">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
-      <VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #2F2F2F;">
+<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.SearchController">
+  <top>
+    <fx:include source="NavBar.fxml"/>
+  </top>
+  <center>
+      <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f2f2f2;">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" />
+            <HBox prefHeight="153.0" prefWidth="571.0" spacing="50.0">
+               <children>
+                  <TextField fx:id="searchBox" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="377.0" promptText="Sök på bok" snapToPixel="false">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#updateSearch" prefHeight="25.0" prefWidth="86.0" text="Sök">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #2F2F2F;">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
          </children>
       </VBox>
-   </children>
-</VBox>
+   </center>
+</BorderPane>

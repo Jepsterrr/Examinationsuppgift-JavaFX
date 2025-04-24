@@ -19,32 +19,11 @@ public class MainViewController {
     @FXML
     private MenuButton logInButtonMenu;
 
-    public void handleLogIn() {
-        // Visa dashboard-panelen
-        profileButton.setVisible(true);
-        profileButton.setManaged(true);
-
-        // Dölja logga in-knappen
-        logInButton.setVisible(false);
-        logInButton.setManaged(false);
-
-        // Visa dropdown-knapp istället
-        logInButtonMenu.setVisible(true);
-        logInButtonMenu.setManaged(true);
-    }
-
-    public void handleLogout() {
-        // Dölja dashboard-panelen
-        profileButton.setVisible(false);
-        profileButton.setManaged(false);
-
-        // Visa logga in-knappen
-        logInButton.setVisible(true);
-        logInButton.setManaged(true);
-
-        // Dölja dropdown-knappen
-        logInButtonMenu.setVisible(false);
-        logInButtonMenu.setManaged(false);
+    @FXML
+    public void initialize() {
+        boolean loggedIn = (App.getCurrentUser() != null);
+        profileButton.setVisible(loggedIn);
+        profileButton.setManaged(loggedIn);
     }
 
     @FXML

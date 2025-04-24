@@ -2,6 +2,8 @@ package org.openjfx;
 
 import java.io.IOException;
 
+import org.openjfx.table.User;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +16,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene scene;
-    private static FXMLLoader fxmlLoader;
+    private static User currentUser;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -24,16 +26,24 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return loader.load();
     }
 
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    public static void setRoot(String fxmlName) throws IOException {
+        scene.setRoot(loadFXML(fxmlName));
     }
 
-    public static Object getController() {
-        return fxmlLoader.getController();
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    public static void logout() {
+        currentUser = null;
     }
 
     public static void main(String[] args) {

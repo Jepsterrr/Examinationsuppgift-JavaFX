@@ -10,7 +10,7 @@ public class User {
     private String userType;
     private String password;
 
-    public User(int loanUserId, int userId, String firstName, String lastName, String email, String userType, String password) {
+    public User(int loanUserId, int userId, String firstName, String lastName, String username, String email, String userType, String password) {
         this.loanUserId = loanUserId;
         this.userId = userId;
         this.firstName = firstName;

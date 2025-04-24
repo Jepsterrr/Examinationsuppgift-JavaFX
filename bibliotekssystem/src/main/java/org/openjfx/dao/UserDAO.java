@@ -1,6 +1,7 @@
 package org.openjfx.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class UserDAO implements DAO<User, Integer> {
                     rs.getString("eNamn"),
                     rs.getString("epost"),
                     rs.getString("anvandartyp"),
+                    rs.getString("anvandarnamn"),
                     rs.getString("losenord")
                 );
             }
@@ -76,12 +78,36 @@ public class UserDAO implements DAO<User, Integer> {
                     rs.getString("fornamn"),
                     rs.getString("efternamn"),
                     rs.getString("epost"),
-                    rs.getString("anvandartyp"),
+                    rs.getString("anvandarTypNamn"),
+                    rs.getString("anvandarnamn"),
                     rs.getString("losenord")
                 ));
             }
             return users;
         }
+    }
+
+    public User findByUsername(String username) throws SQLException {
+        String sql = "SELECT lantagarId, anvandarId, fnamn, enamn, epost, anvandarTypNamn, anvandarnamn, losenord " +
+                     "FROM Bibblo.Låntagare WHERE anvandarnamn = ?";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("lantagarId"),
+                        rs.getInt("anvandarId"),
+                        rs.getString("fnamn"),
+                        rs.getString("enamn"),
+                        rs.getString("epost"),
+                        rs.getString("anvandarTypNamn"),
+                        rs.getString("anvandarnamn"),
+                        rs.getString("losenord")
+                    );
+                }
+            }
+        }
+        return null;
     }
     
 }
