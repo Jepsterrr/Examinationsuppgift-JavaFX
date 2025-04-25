@@ -40,7 +40,10 @@ public class NavBarController {
     @FXML
     private void handleLogout() throws IOException {
         App.logout();
-        
         updateState();
+
+        if (App.getCurrentSceneName().equals("ProfileView")) {
+            App.setRoot("MainView");
+        }
     }
 }

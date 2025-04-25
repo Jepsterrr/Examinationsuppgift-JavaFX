@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Scene scene;
+    private static String currentSceneName;
     private static User currentUser;
 
     @Override
@@ -32,6 +33,14 @@ public class App extends Application {
 
     public static void setRoot(String fxmlName) throws IOException {
         scene.setRoot(loadFXML(fxmlName));
+        currentSceneName = fxmlName;
+    }
+
+    public static String getCurrentSceneName() {
+        if (currentSceneName != null) {
+            return currentSceneName;
+        }
+        return "";
     }
 
     public static User getCurrentUser() {

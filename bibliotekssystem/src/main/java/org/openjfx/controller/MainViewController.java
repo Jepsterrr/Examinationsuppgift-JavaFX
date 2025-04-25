@@ -49,6 +49,6 @@ public class MainViewController {
 
     @FXML
     private void btnProfile() throws IOException {
-        System.out.println("Profil");
+        App.setRoot("ProfileView");
     }
 }
