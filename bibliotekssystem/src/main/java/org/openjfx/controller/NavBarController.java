@@ -18,7 +18,7 @@ public class NavBarController {
         updateState();
     }
 
-    /** Anropa varje gång vi vill uppdatera knapp-visningar */
+    // Anropa varje gång vi vill uppdatera knapp-visningar
     public void updateState() {
         boolean loggedIn = App.getCurrentUser() != null;
         logInButton.setVisible(!loggedIn);
@@ -40,6 +40,7 @@ public class NavBarController {
     @FXML
     private void handleLogout() throws IOException {
         App.logout();
-        App.setRoot("MainView");
+        
+        updateState();
     }
 }
