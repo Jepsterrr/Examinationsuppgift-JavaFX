@@ -41,8 +41,12 @@ public class NavBarController {
     private void handleLogout() throws IOException {
         App.logout();
         updateState();
+        
+        // Detta är en workaround för att kalla initialize där knappen trycks
+        String view = App.getCurrentSceneName();
+        App.setRoot(view);
 
-        if (App.getCurrentSceneName().equals("ProfileView")) {
+        if (App.getCurrentSceneName().equals("ProfileView") || App.getCurrentSceneName().equals("AdminView")) {
             App.setRoot("MainView");
         }
     }

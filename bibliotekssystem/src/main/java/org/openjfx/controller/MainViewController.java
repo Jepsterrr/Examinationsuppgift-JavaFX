@@ -6,7 +6,6 @@ import org.openjfx.App;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
 
 public class MainViewController {
 
@@ -14,16 +13,21 @@ public class MainViewController {
     private Button profileButton;
 
     @FXML
-    private Button logInButton;
-
-    @FXML
-    private MenuButton logInButtonMenu;
+    private Button adminButton;
 
     @FXML
     public void initialize() {
+        updateState();
+    }
+
+    public void updateState() {
         boolean loggedIn = (App.getCurrentUser() != null);
-        profileButton.setVisible(loggedIn);
-        profileButton.setManaged(loggedIn);
+        boolean isAdmin = loggedIn && App.getCurrentUser().getUserType().equals("admin");
+
+        adminButton.setVisible(isAdmin);
+        adminButton.setManaged(isAdmin);
+        profileButton.setVisible(loggedIn && !isAdmin);
+        profileButton.setManaged(loggedIn && !isAdmin);
     }
 
     @FXML
@@ -50,5 +54,10 @@ public class MainViewController {
     @FXML
     private void btnProfile() throws IOException {
         App.setRoot("ProfileView");
+    }
+
+    @FXML
+    private void btnAdmin() throws IOException {
+        App.setRoot("AdminView");
     }
 }
