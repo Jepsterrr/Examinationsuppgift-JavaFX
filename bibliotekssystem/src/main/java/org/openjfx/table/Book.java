@@ -1,26 +1,16 @@
 package org.openjfx.table;
 
-public class Book {
-    // Kika mer på ifall alla tabeller osv behövs så den matchar databasen
-    private int titleId;
+public class Book extends MediaItem {
     private String isbn;
     private int numberOfPages;
     private int publisherId;
-    private boolean onLoan;
 
-    public Book(int titleId, String isbn, int numberOfPages, int publisherId) {
-        this.titleId = titleId;
+    public Book(int titleId, String title, int loanTypeId, int antalExemplar, 
+                String isbn, int numberOfPages, int publisherId) {
+        super(titleId, title, loanTypeId, antalExemplar);
         this.numberOfPages = numberOfPages;
         this.publisherId = publisherId;
         this.isbn = isbn;
-    }
-
-    public int getTitleId() {
-        return titleId;
-    }
-
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
     }
 
     public String getIsbn() {
@@ -47,16 +37,8 @@ public class Book {
         this.publisherId = publisherId;
     }
 
-    public boolean isOnLoan() {
-        return onLoan;
-    }
-
-    public void setOnLoan(boolean onLoan) {
-        this.onLoan = onLoan;
-    }
-
     @Override
-    public String toString() {
-        return "ISBN: (" + isbn + ")" + (onLoan ? " [Utlånad]" : "  [Tillgänglig]");
+    public String getDetails() {
+        return "ISBN: " + isbn + ", Antal sidor: " + numberOfPages + ", Förlag ID: " + publisherId;
     }
 }

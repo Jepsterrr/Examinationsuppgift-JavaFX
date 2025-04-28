@@ -6,38 +6,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjfx.table.Book;
+import org.openjfx.table.DVD;
 import org.openjfx.util.DBConnection;
 
-public class BookDAO implements MediaItemDAO<Book> {
+public class DvdDAO implements MediaItemDAO<DVD> {
 
     @Override
-    public void add(Book b) throws SQLException {
+    public void add(DVD d) throws SQLException {
         String sql = "INSERT INTO Bibblo.Titel(titelId, lanetypId, titel) VALUES (?, ?, ?);\n"
-                   + "INSERT INTO Bibblo.Bok(titelId, antalSidor, ISBN, bokutgivareId) VALUES (?, ?, ?, ?)";
+                   + "INSERT INTO Bibblo.DVD(titelId, antalMin) VALUES (?, ?)";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, b.getTitleId());
-            ps.setInt(2, b.getLoanTypeId());
-            ps.setString(3, b.getTitle());
-            ps.setInt(4, b.getTitleId());
-            ps.setInt(5, b.getNumberOfPages());
-            ps.setString(6, b.getIsbn());
-            ps.setInt(7, b.getPublisherId());
+            ps.setInt(1, d.getTitleId());
+            ps.setInt(2, d.getLoanTypeId());
+            ps.setString(3, d.getTitle());
+            ps.setInt(4, d.getTitleId());
+            ps.setInt(5, d.getDurationMinutes());
             ps.executeUpdate();
         }
     }
 
     @Override
-    public void update(Book b) throws SQLException {
+    public void update(DVD d) throws SQLException {
         String sql = "UPDATE Bibblo.Titel SET titel = ? WHERE titelId = ?;\n"
-                   + "UPDATE Bibblo.Bok SET antalSidor = ?, ISBN = ?, bokutgivareId = ? WHERE titelId = ?";
+                   + "UPDATE Bibblo.DVD SET antalMin = ? WHERE titelId = ?";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            ps.setString(1, b.getTitle());
-            ps.setInt(2, b.getTitleId());
-            ps.setInt(3, b.getNumberOfPages());
-            ps.setString(4, b.getIsbn());
-            ps.setInt(5, b.getPublisherId());
-            ps.setInt(6, b.getTitleId());
+            ps.setString(1, d.getTitle());
+            ps.setInt(2, d.getTitleId());
+            ps.setInt(3, d.getDurationMinutes());
+            ps.setInt(4, d.getTitleId());
             ps.executeUpdate();
         }
     }
@@ -52,24 +48,22 @@ public class BookDAO implements MediaItemDAO<Book> {
     }
 
     @Override
-    public Book get(int id) throws SQLException {
+    public DVD get(int id) throws SQLException {
         String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
+                   + "       d.antalMin\n"
                    + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                   + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Book(
+                    return new DVD(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
-                        rs.getString("ISBN"),
-                        rs.getInt("antalSidor"),
-                        rs.getInt("bokutgivareId")
+                        rs.getInt("antalMin")
                     );
                 }
             }
@@ -78,29 +72,26 @@ public class BookDAO implements MediaItemDAO<Book> {
     }
 
     @Override
-    public List<Book> searchByTitle(String title) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
+    public List<DVD> searchByTitle(String title) throws SQLException {
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
                    + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                   + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
                    + "WHERE t.titel LIKE ?";
-        List<Book> results = new ArrayList<>();
+        List<DVD> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setString(1, "%" + title.toLowerCase() + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    results.add(new Book(
+                    list.add(new DVD(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
-                        rs.getString("ISBN"),
-                        rs.getInt("antalSidor"),
-                        rs.getInt("bokutgivareId")
+                        rs.getInt("antalMin")
                     ));
                 }
             }
         }
-        return results;
+        return list;
     }
 }
