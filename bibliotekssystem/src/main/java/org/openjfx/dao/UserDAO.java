@@ -48,18 +48,19 @@ public class UserDAO implements DAO<User, Integer> {
         String sql = "SELECT * FROM Bibblo.låntagare WHERE lantagareId = ?";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, key);
-            var rs = ps.executeQuery();
-            if (rs.next()) {
-                return new User(
-                    rs.getInt("lantagareId"),
-                    rs.getInt("userId"),
-                    rs.getString("fNamn"),
-                    rs.getString("eNamn"),
-                    rs.getString("epost"),
-                    rs.getString("anvandartyp"),
-                    rs.getString("anvandarnamn"),
-                    rs.getString("losenord")
-                );
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("lantagareId"),
+                        rs.getInt("userId"),
+                        rs.getString("fNamn"),
+                        rs.getString("eNamn"),
+                        rs.getString("epost"),
+                        rs.getString("anvandartyp"),
+                        rs.getString("anvandarnamn"),
+                        rs.getString("losenord")
+                    );
+                }
             }
         }
         return null;
@@ -69,19 +70,20 @@ public class UserDAO implements DAO<User, Integer> {
     public List<User> getAll() throws SQLException {
         String sql = "SELECT * FROM Bibblo.låntagare";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            var rs = ps.executeQuery();
             List<User> users = new ArrayList<>();
-            while (rs.next()) {
-                users.add(new User(
-                    rs.getInt("lantagareId"),
-                    rs.getInt("userId"),
-                    rs.getString("fornamn"),
-                    rs.getString("efternamn"),
-                    rs.getString("epost"),
-                    rs.getString("anvandarTypNamn"),
-                    rs.getString("anvandarnamn"),
-                    rs.getString("losenord")
-                ));
+            try (ResultSet rs = ps.executeQuery()) { 
+                while (rs.next()) {
+                    users.add(new User(
+                        rs.getInt("lantagareId"),
+                        rs.getInt("userId"),
+                        rs.getString("fornamn"),
+                        rs.getString("efternamn"),
+                        rs.getString("epost"),
+                        rs.getString("anvandarTypNamn"),
+                        rs.getString("anvandarnamn"),
+                        rs.getString("losenord")
+                    ));
+                }
             }
             return users;
         }

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
 
 import org.openjfx.table.Book;
 import org.openjfx.util.DBConnection;
@@ -49,16 +50,15 @@ public class BookDAO implements DAO<Book, Integer> {
         String sql = "SELECT * FROM Bibblo.bok WHERE titelId = ?";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
-            var rs = ps.executeQuery();
-            if (rs.next()) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                 return new Book(
                     rs.getInt("titelId"),
-                    rs.getString("titel"),
                     rs.getString("ISBN"),
                     rs.getInt("antalSidor"),
-                    rs.getInt("bokutgivareId"),
-                    rs.getBoolean("onLoan")
-                );
+                    rs.getInt("bokutgivareId")
+                    );
+                };
             }
         }
         return null;
@@ -66,21 +66,24 @@ public class BookDAO implements DAO<Book, Integer> {
 
     @Override
     public List<Book> getAll() throws SQLException {
-        String sql = "SELECT * FROM bibblo.Bok";
+        String sql = "SELECT * FROM bibblo.bok";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            var rs = ps.executeQuery();
-            List<Book> books = new ArrayList<>();
-            while (rs.next()) {
-                books.add(new Book(
-                    rs.getInt("titelId"),
-                    rs.getString("titel"),
-                    rs.getString("ISBN"),
-                    rs.getInt("antalSidor"),
-                    rs.getInt("bokutgivareId"),
-                    rs.getBoolean("onLoan")
-                ));
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Book> books = new ArrayList<>();
+                while (rs.next()) {
+                    books.add(new Book(
+                        
+                        rs.getInt("titelId"),
+                        rs.getString("ISBN"),
+                        rs.getInt("antalSidor"),
+                        rs.getInt("bokutgivareId")
+                    ));
+                    System.out.println(books.get(0));
+                }
+                return books;
             }
-            return books;
         }
     }
+    
 }
