@@ -5,7 +5,7 @@ public class User {
     private int userId;
     private String firstName;
     private String lastName;
-    private String username;
+    private final String username;
     private String email;
     private String userType;
     private String password;
@@ -79,20 +79,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "loanUserId=" + loanUserId +
-                ", userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", userType='" + userType + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    
     }
 }
 
