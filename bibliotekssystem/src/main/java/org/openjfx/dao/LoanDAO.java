@@ -41,8 +41,8 @@ public class LoanDAO implements DAO<Loan, Integer> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(
-             "DELETE FROM Bibblo.Lån WHERE lanId=?")) {
+        String sql = "DELETE FROM Bibblo.Lån WHERE lanId=?";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -71,16 +71,16 @@ public class LoanDAO implements DAO<Loan, Integer> {
     @Override
     public List<Loan> getAll() throws SQLException {
         List<Loan> list = new ArrayList<>();
-        try (ResultSet rs = DBConnection.getConnection()
-                 .createStatement()
-                 .executeQuery("SELECT * FROM Bibblo.Lån")) {
+        String sql = "SELECT * FROM Bibblo.Lån";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new Loan(
-                  rs.getInt("lanId"),
-                  rs.getInt("lantagarId"),
-                  rs.getDate("låneDatum").toLocalDate(),
-                  rs.getDate("aterlamningsDatum") != null ? rs.getDate("aterlamningsDatum").toLocalDate() : null,
-                  rs.getDate("returDatum") != null ? rs.getDate("returDatum").toLocalDate() : null
+                    rs.getInt("lanId"),
+                    rs.getInt("lantagarId"),
+                    rs.getDate("låneDatum").toLocalDate(),
+                    rs.getDate("aterlamningsDatum") != null ? rs.getDate("aterlamningsDatum").toLocalDate() : null,
+                    rs.getDate("returDatum")       != null ? rs.getDate("returDatum").toLocalDate()       : null
                 ));
             }
         }

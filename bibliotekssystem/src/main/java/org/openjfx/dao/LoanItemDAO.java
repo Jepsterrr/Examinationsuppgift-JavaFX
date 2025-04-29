@@ -66,11 +66,17 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     @Override
     public List<LoanItem> getAll() throws SQLException {
         List<LoanItem> list = new ArrayList<>();
-        try (ResultSet rs = DBConnection.getConnection()
-                 .createStatement()
-                 .executeQuery("SELECT * FROM Bibblo.Låneföremål")) {
+        String sql = "SELECT * FROM Bibblo.Låneföremål";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                list.add(get(rs.getInt("låneFöremålId")));
+                list.add(new LoanItem(
+                    rs.getInt("låneFöremålId"),
+                    rs.getInt("lanId"),
+                    rs.getString("Streckkod"),
+                    rs.getDate("returneratDatum")  != null ? rs.getDate("returneratDatum").toLocalDate()  : null,
+                    rs.getDate("returnerasSenast").toLocalDate()
+                ));
             }
         }
         return list;

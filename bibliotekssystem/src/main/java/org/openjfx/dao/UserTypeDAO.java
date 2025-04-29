@@ -63,14 +63,14 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
     @Override
     public List<UserType> getAll() throws SQLException {
         List<UserType> list = new ArrayList<>();
-        try (ResultSet rs = DBConnection.getConnection()
-                 .createStatement()
-                 .executeQuery("SELECT * FROM Bibblo.Användartyp")) {
+        String sql = "SELECT * FROM Bibblo.Användartyp";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new UserType(
-                  rs.getInt("anvandarId"),
-                  rs.getString("typNamn"),
-                  rs.getInt("MaxAntalLan")
+                    rs.getInt("anvandarId"),
+                    rs.getString("typNamn"),
+                    rs.getInt("MaxAntalLan")
                 ));
             }
         }

@@ -1,13 +1,13 @@
 package org.openjfx.dao;
 
-import org.openjfx.table.Copy;
-import org.openjfx.util.DBConnection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.openjfx.table.Copy;
+import org.openjfx.util.DBConnection;
 
 public class CopyDAO implements DAO<Copy, String> {
 
@@ -69,16 +69,16 @@ public class CopyDAO implements DAO<Copy, String> {
     @Override
     public List<Copy> getAll() throws SQLException {
         List<Copy> list = new ArrayList<>();
-        try (ResultSet rs = DBConnection.getConnection()
-                 .createStatement()
-                 .executeQuery("SELECT * FROM Bibblo.Copy")) {
+        String sql = "SELECT * FROM Bibblo.Exemplar";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new Copy(
-                  rs.getString("Streckkod"),
-                  rs.getInt("platsId"),
-                  rs.getInt("titelId"),
-                  rs.getBoolean("utlanad"),
-                  rs.getBoolean("Referenslitteratur")
+                    rs.getString("Streckkod"),
+                    rs.getInt("platsId"),
+                    rs.getInt("titelId"),
+                    rs.getBoolean("utlanad"),
+                    rs.getBoolean("Referenslitteratur")
                 ));
             }
         }
