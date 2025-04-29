@@ -11,15 +11,23 @@ import org.openjfx.table.MediaItem;
 
 public class SearchService {
 
-    private final BookDAO bookDao = new BookDAO();
-    private final DvdDAO dvdDao   = new DvdDAO();
-    private final ArticleDAO artDao = new ArticleDAO();
+    private final BookDAO bookDAO = new BookDAO();
+    private final DvdDAO dvdDAO = new DvdDAO();
+    private final ArticleDAO artDAO = new ArticleDAO();
 
     public List<MediaItem> searchAll(String term) throws SQLException {
         List<MediaItem> allMedia = new ArrayList<>();
-        allMedia.addAll(bookDao.searchByTitle(term));
-        allMedia.addAll(dvdDao.searchByTitle(term));
-        allMedia.addAll(artDao.searchByTitle(term));
+        allMedia.addAll(bookDAO.searchByTitle(term));
+        allMedia.addAll(dvdDAO.searchByTitle(term));
+        allMedia.addAll(artDAO.searchByTitle(term));
+        return allMedia;
+    }
+
+    public List<MediaItem> getAll() throws SQLException {
+        List<MediaItem> allMedia = new ArrayList<>();
+        allMedia.addAll(bookDAO.getAll());
+        allMedia.addAll(dvdDAO.getAll());
+        allMedia.addAll(artDAO.getAll());
         return allMedia;
     }
 }

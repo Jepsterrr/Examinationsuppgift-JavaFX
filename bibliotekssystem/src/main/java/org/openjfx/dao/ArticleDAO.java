@@ -51,8 +51,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
 
     @Override
     public Article get(int id) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       a.artikelSidor, a.tidsskrift\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
@@ -75,9 +74,31 @@ public class ArticleDAO implements MediaItemDAO<Article> {
     }
 
     @Override
+    public List<Article> getAll() throws SQLException {
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
+                   + "FROM Bibblo.Titel t\n"
+                   + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId";
+        List<Article> list = new ArrayList<>();
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Article(
+                        rs.getInt("titelId"),
+                        rs.getString("titel"),
+                        rs.getInt("lanetypId"),
+                        rs.getInt("antalExemplar"),
+                        rs.getInt("artikelSidor"),
+                        rs.getString("tidsskrift")
+                    ));
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
     public List<Article> searchByTitle(String title) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       a.artikelSidor, a.tidsskrift\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
                    + "WHERE t.titel LIKE ?";

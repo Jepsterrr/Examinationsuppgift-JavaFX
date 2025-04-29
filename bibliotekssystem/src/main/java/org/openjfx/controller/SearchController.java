@@ -20,6 +20,17 @@ public class SearchController {
     private ListView<MediaItem> listView;
 
     @FXML
+    public void initialize() {
+        // Initiera listan med alla MediaItem-objekt
+        try {
+            List<MediaItem> allItems = service.getAll();
+            listView.getItems().setAll(allItems);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void updateSearch() {
         String term = searchBox.getText();
         

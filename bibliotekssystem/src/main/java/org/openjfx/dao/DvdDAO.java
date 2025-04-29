@@ -49,8 +49,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
 
     @Override
     public DVD get(int id) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       d.antalMin\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
@@ -69,6 +68,28 @@ public class DvdDAO implements MediaItemDAO<DVD> {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<DVD> getAll() throws SQLException {
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
+                   + "FROM Bibblo.Titel t\n"
+                   + "JOIN Bibblo.DVD d ON d.titelId = t.titelId";
+        List<DVD> list = new ArrayList<>();
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new DVD(
+                        rs.getInt("titelId"),
+                        rs.getString("titel"),
+                        rs.getInt("lanetypId"),
+                        rs.getInt("antalExemplar"),
+                        rs.getInt("antalMin")
+                    ));
+                }
+            }
+        }
+        return list;
     }
 
     @Override
