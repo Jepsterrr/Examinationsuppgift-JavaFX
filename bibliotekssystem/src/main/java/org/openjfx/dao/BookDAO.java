@@ -107,7 +107,7 @@ public class BookDAO implements MediaItemDAO<Book> {
                    + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
-                   + "WHERE t.titel LIKE ?";
+                   + "WHERE t.titel ILIKE ?";
         List<Book> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setString(1, "%" + title.toLowerCase() + "%");

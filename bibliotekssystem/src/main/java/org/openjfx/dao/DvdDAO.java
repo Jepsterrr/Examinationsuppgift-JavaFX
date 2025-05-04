@@ -97,7 +97,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
         String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
-                   + "WHERE t.titel LIKE ?";
+                   + "WHERE t.titel ILIKE ?";
         List<DVD> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setString(1, "%" + title.toLowerCase() + "%");

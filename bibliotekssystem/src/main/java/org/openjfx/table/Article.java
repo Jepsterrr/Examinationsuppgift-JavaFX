@@ -29,6 +29,6 @@ public class Article extends MediaItem {
 
     @Override
     public String getDetails() {
-        return "Sidor: " + pages + ", Tidskrift: " + journal;
+        return " - Sidor: " + pages + " - Tidskrift: " + journal;
     }
 }

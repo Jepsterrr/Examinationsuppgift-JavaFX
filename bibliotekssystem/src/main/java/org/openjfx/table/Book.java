@@ -39,6 +39,6 @@ public class Book extends MediaItem {
 
     @Override
     public String getDetails() {
-        return "ISBN: " + isbn + ", Antal sidor: " + numberOfPages + ", Förlag ID: " + publisherId;
+        return " - ISBN: " + isbn + " - Antal sidor: " + numberOfPages + " - Förlag ID: " + publisherId;
     }
 }

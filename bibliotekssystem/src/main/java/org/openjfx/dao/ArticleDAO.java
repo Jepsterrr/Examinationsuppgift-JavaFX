@@ -101,7 +101,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
         String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
-                   + "WHERE t.titel LIKE ?";
+                   + "WHERE t.titel ILIKE ?";
         List<Article> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setString(1, "%" + title.toLowerCase() + "%");

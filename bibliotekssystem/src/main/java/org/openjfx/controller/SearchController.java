@@ -6,6 +6,7 @@ import org.openjfx.service.SearchService;
 import org.openjfx.table.MediaItem;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -21,7 +22,16 @@ public class SearchController {
 
     @FXML
     public void initialize() {
-        // Initiera listan med alla MediaItem-objekt
+        listView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(MediaItem item, boolean empty) {
+                super.updateItem(item, empty);
+                setText((empty || item == null)
+                    ? null
+                    : item.getTitle() + " – " + item.getDetails());
+            }
+        });
+
         try {
             List<MediaItem> allItems = service.getAll();
             listView.getItems().setAll(allItems);
@@ -29,6 +39,7 @@ public class SearchController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void updateSearch() {
@@ -39,6 +50,7 @@ public class SearchController {
 
             // Fyll listan med MediaItem-objekt
             listView.getItems().setAll(hits);
+
             searchBox.clear();
             for (MediaItem item : hits) {
                 System.out.println(item.getTitle() + " - " + item.getDetails());

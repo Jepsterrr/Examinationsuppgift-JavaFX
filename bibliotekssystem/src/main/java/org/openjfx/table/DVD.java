@@ -19,6 +19,6 @@ public class DVD extends MediaItem {
 
     @Override
     public String getDetails() {
-        return "Speltid: " + durationMinutes + " min";
+        return " - Speltid: " + durationMinutes + " min";
     }
 }
