@@ -30,4 +30,10 @@ public class SearchService {
         allMedia.addAll(artDAO.getAll());
         return allMedia;
     }
+
+    public List<MediaItem> searchByISBN(String isbn) throws SQLException {
+        List<MediaItem> allMedia = new ArrayList<>();
+        allMedia.addAll(bookDAO.searchByISBN(isbn));
+        return allMedia;
+    }
 }

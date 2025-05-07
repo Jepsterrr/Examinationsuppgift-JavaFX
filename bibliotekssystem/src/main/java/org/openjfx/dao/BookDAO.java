@@ -127,4 +127,30 @@ public class BookDAO implements MediaItemDAO<Book> {
         }
         return list;
     }
+
+    public List<Book> searchByISBN(String isbn) throws SQLException {
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
+                   + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
+                   + "FROM Bibblo.Titel t\n"
+                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                   + "WHERE b.ISBN ILIKE ?";
+        List<Book> list = new ArrayList<>();
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+            ps.setString(1, "%" + isbn.toLowerCase() + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Book(
+                        rs.getInt("titelId"),
+                        rs.getString("titel"),
+                        rs.getInt("lanetypId"),
+                        rs.getInt("antalExemplar"),
+                        rs.getString("ISBN"),
+                        rs.getInt("antalSidor"),
+                        rs.getInt("bokutgivareId")
+                    ));
+                }
+            }
+        }
+        return list;
+    }
 }
