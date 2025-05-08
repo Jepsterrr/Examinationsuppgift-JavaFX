@@ -97,14 +97,28 @@ public class ArticleDAO implements MediaItemDAO<Article> {
     }
 
     @Override
-    public List<Article> searchByTitle(String title) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
-                   + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
-                   + "WHERE t.titel ILIKE ?";
+    public List<Article> searchByTerm(String term) throws SQLException {
+        String sql = "SELECT DISTINCT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
+                    + "a.artikelSidor, a.tidsskrift\n"
+                    + "FROM Bibblo.Titel t\n"
+                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
+                    + "LEFT JOIN Bibblo.TitelNyckelord tk ON tk.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Nyckelord nk ON nk.nyckelordId = tk.nyckelordId\n"
+                    + "WHERE t.titel ILIKE ?\n"
+                    + "OR a.tidsskrift ILIKE ?\n"
+                    + "OR k.fNamn ILIKE ?\n"
+                    + "OR k.eNamn ILIKE ?\n"
+                    + "OR nk.nyckelord ILIKE ?";
         List<Article> list = new ArrayList<>();
+        String pattern = "%" + term + "%";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            ps.setString(1, "%" + title.toLowerCase() + "%");
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            ps.setString(3, pattern);
+            ps.setString(4, pattern);
+            ps.setString(5, pattern);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Article(

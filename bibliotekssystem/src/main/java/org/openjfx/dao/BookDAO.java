@@ -102,41 +102,28 @@ public class BookDAO implements MediaItemDAO<Book> {
     }
 
     @Override
-    public List<Book> searchByTitle(String title) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
-                   + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
-                   + "WHERE t.titel ILIKE ?";
+    public List<Book> searchByTerm(String term) throws SQLException {
+        String sql = "SELECT DISTINCT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
+                    + "b.antalSidor, b.ISBN, b.bokutgivareId\n"
+                    + "FROM Bibblo.Titel t\n"
+                    + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
+                    + "LEFT JOIN Bibblo.TitelNyckelord tk ON tk.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Nyckelord nk ON nk.nyckelordId = tk.nyckelordId\n"
+                    + "WHERE t.titel ILIKE ?\n"
+                    + "OR translate(b.ISBN, '-', '') ILIKE ?\n"
+                    + "OR k.fNamn ILIKE ?\n"
+                    + "OR k.eNamn ILIKE ?\n"
+                    + "OR nk.nyckelord ILIKE ?";
         List<Book> list = new ArrayList<>();
+        String pattern = "%" + term + "%";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            ps.setString(1, "%" + title.toLowerCase() + "%");
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(new Book(
-                        rs.getInt("titelId"),
-                        rs.getString("titel"),
-                        rs.getInt("lanetypId"),
-                        rs.getInt("antalExemplar"),
-                        rs.getString("ISBN"),
-                        rs.getInt("antalSidor"),
-                        rs.getInt("bokutgivareId")
-                    ));
-                }
-            }
-        }
-        return list;
-    }
-
-    public List<Book> searchByISBN(String isbn) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                   + "       b.antalSidor, b.ISBN, b.bokutgivareId\n"
-                   + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
-                   + "WHERE b.ISBN ILIKE ?";
-        List<Book> list = new ArrayList<>();
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
-            ps.setString(1, "%" + isbn.toLowerCase() + "%");
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            ps.setString(3, pattern);
+            ps.setString(4, pattern);
+            ps.setString(5, pattern);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Book(

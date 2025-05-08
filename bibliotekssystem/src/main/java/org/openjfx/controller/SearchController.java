@@ -2,8 +2,6 @@ package org.openjfx.controller;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.openjfx.service.SearchInputService;
-import org.openjfx.service.ISBNFormatter;
 import org.openjfx.service.SearchService;
 import org.openjfx.table.MediaItem;
 
@@ -25,15 +23,17 @@ public class SearchController {
     @FXML
     public void initialize() {
         listView.setCellFactory(lv -> new ListCell<>() {
+            // Används för att visa MediaItem-objekt i listan på ett lämpligt sätt
             @Override
             protected void updateItem(MediaItem item, boolean empty) {
                 super.updateItem(item, empty);
                 setText((empty || item == null)
                     ? null
-                    : item.getTitle() + " – " + item.getDetails());
+                    : item.getTitle() + item.getDetails());
             }
         });
 
+        // Hämta alla MediaItem-objekt och lägg till dem i listan
         try {
             List<MediaItem> allItems = service.getAll();
             listView.getItems().setAll(allItems);
@@ -46,22 +46,6 @@ public class SearchController {
     @FXML
     private void updateSearch() {
         String term = searchBox.getText();
-        if (SearchInputService.isPotentialISBNAttempt(term)) {
-            System.out.println("Förmodligen till ISBN");
-            String isbn = ISBNFormatter.formatISBN(term);
-            try {
-                List<MediaItem> hits = service.searchByISBN(isbn);
-                listView.getItems().setAll(hits);
-                searchBox.clear();
-                for (MediaItem item : hits) {
-                    System.out.println(item.getTitle() + " - " + item.getDetails());
-                }
-            // Om det inte finns några träffar, sök i alla medier
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            
-        } else {
         try {
             List<MediaItem> hits = service.searchAll(term);
 
@@ -70,13 +54,12 @@ public class SearchController {
 
             searchBox.clear();
             for (MediaItem item : hits) {
-                System.out.println(item.getTitle() + " - " + item.getDetails());
+                System.out.println(item.getTitle() + item.getDetails());
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
     }
 }
 

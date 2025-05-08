@@ -17,9 +17,9 @@ public class SearchService {
 
     public List<MediaItem> searchAll(String term) throws SQLException {
         List<MediaItem> allMedia = new ArrayList<>();
-        allMedia.addAll(bookDAO.searchByTitle(term));
-        allMedia.addAll(dvdDAO.searchByTitle(term));
-        allMedia.addAll(artDAO.searchByTitle(term));
+        allMedia.addAll(bookDAO.searchByTerm(term));
+        allMedia.addAll(dvdDAO.searchByTerm(term));
+        allMedia.addAll(artDAO.searchByTerm(term));
         return allMedia;
     }
 
@@ -28,12 +28,6 @@ public class SearchService {
         allMedia.addAll(bookDAO.getAll());
         allMedia.addAll(dvdDAO.getAll());
         allMedia.addAll(artDAO.getAll());
-        return allMedia;
-    }
-
-    public List<MediaItem> searchByISBN(String isbn) throws SQLException {
-        List<MediaItem> allMedia = new ArrayList<>();
-        allMedia.addAll(bookDAO.searchByISBN(isbn));
         return allMedia;
     }
 }

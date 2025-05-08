@@ -12,5 +12,5 @@ public interface MediaItemDAO<T> {
     void delete(int id) throws SQLException;
     T get(int id) throws SQLException;
     List<T> getAll() throws SQLException;
-    List<T> searchByTitle(String title) throws SQLException;
+    List<T> searchByTerm(String title) throws SQLException;
 }
