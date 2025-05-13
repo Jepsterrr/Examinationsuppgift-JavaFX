@@ -52,7 +52,6 @@ public class SearchController {
             // Fyll listan med MediaItem-objekt
             listView.getItems().setAll(hits);
 
-            searchBox.clear();
             for (MediaItem item : hits) {
                 System.out.println(item.getTitle() + item.getDetails());
             }

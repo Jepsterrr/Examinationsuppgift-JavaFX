@@ -9,8 +9,17 @@ import javafx.fxml.FXML;
 public class AdminViewController {
 
     @FXML
-    private void btnSearch() throws IOException {
-        App.setRoot("search");
+    private void btnBack() throws IOException {
+        App.setRoot("MainView");
     }
 
+    @FXML
+    private void btnList() throws IOException {
+        App.setRoot("MainView");
+    }
+
+    @FXML
+    private void btnEdit() throws IOException {
+        App.setRoot("EditView");
+    }
 }
