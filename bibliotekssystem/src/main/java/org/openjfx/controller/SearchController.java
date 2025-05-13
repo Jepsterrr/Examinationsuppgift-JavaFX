@@ -60,5 +60,20 @@ public class SearchController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void checkEmpty() {
+        if (searchBox.getText().isEmpty()) {
+            listView.getItems().clear();
+            try {
+                List<MediaItem> allItems = service.getAll();
+                listView.getItems().setAll(allItems);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            updateSearch();
+        }
+    }
 }
 
