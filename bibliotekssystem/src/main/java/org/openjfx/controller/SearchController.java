@@ -52,13 +52,28 @@ public class SearchController {
             // Fyll listan med MediaItem-objekt
             listView.getItems().setAll(hits);
 
-            searchBox.clear();
+            //searchBox.clear();
             for (MediaItem item : hits) {
                 System.out.println(item.getTitle() + item.getDetails());
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void checkEmpty() {
+        if (searchBox.getText().isEmpty()) {
+            listView.getItems().clear();
+            try {
+                List<MediaItem> allItems = service.getAll();
+                listView.getItems().setAll(allItems);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            updateSearch();
         }
     }
 }
