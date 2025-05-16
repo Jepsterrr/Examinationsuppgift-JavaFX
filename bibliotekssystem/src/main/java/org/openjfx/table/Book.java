@@ -4,6 +4,7 @@ public class Book extends MediaItem {
     private String isbn;
     private int numberOfPages;
     private int publisherId;
+    private String publisherName;
 
     public Book(int titleId, String title, int loanTypeId, int antalExemplar, 
                 String isbn, int numberOfPages, int publisherId) {
@@ -37,8 +38,22 @@ public class Book extends MediaItem {
         this.publisherId = publisherId;
     }
 
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
     @Override
     public String getDetails() {
-        return " - ISBN: " + isbn + " - Antal sidor: " + numberOfPages + " - Förlag ID: " + publisherId;
+        return String.format(
+            ", ISBN: %s, Sidor: %d, Förlag: %s, Författare: %s",
+            isbn,
+            numberOfPages,
+            publisherName != null ? publisherName : "",
+            getCreatorNames() != null  ? getCreatorNames()  : ""
+        );
     }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.openjfx.controller.EditViewController"
+            minWidth="820" minHeight="640">
+
+  <top>
+    <fx:include source="NavBar.fxml"/>
+  </top>
+
+  <center>
+    <VBox spacing="20" style="-fx-background-color:#f2f2f2;" alignment="TOP_CENTER">
+      <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+      </padding>
+
+      <!-- Välj typ -->
+      <HBox spacing="10">
+        <Label text="Typ:"/>
+        <ChoiceBox fx:id="typeSelector" prefWidth="150"/>
+      </HBox>
+
+      <SplitPane dividerPositions="0.3" prefHeight="500" prefWidth="780">
+
+        <!-- Vänster: lista över alla media -->
+        <ListView fx:id="listView" prefWidth="240"/>
+
+        <!-- Höger: formulär -->
+        <VBox fx:id="formBox" spacing="10" style="-fx-background-color:white; -fx-border-color:#ccc; -fx-border-width:1;">
+          <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+          </padding>
+
+          <!-- Gemensamma fält -->
+          <Label text="TitelId:"/>
+          <TextField fx:id="fldTitleId" editable="false"/>
+          <Label text="Titel:"/>
+          <TextField fx:id="fldTitle"/>
+          <Label text="LånetypId:"/>
+          <TextField fx:id="fldLoanTypeId"/>
+          <Label text="Antal exemplar:"/>
+          <TextField fx:id="fldExCount"/>
+
+          <!-- Bok-specifikt, DVD- eller Artikel-fält läggs dynamiskt -->
+
+          <!-- Knapprad -->
+          <HBox spacing="10" alignment="CENTER">
+            <Button text="Ny"    onAction="#onNew"    prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button text="Spara" onAction="#onSave"   prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button text="Ta bort" onAction="#onDelete" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button text="Tillbaka" onAction="#onBack" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+          </HBox>
+        </VBox>
+
+      </SplitPane>
+    </VBox>
+  </center>
+</BorderPane>

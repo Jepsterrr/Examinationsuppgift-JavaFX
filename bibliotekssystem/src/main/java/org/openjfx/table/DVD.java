@@ -19,6 +19,10 @@ public class DVD extends MediaItem {
 
     @Override
     public String getDetails() {
-        return " - Speltid: " + durationMinutes + " min";
+        return String.format(
+            ", Speltid: %d min, Medverkande: %s",
+            durationMinutes,
+            getCreatorNames() != null ? getCreatorNames() : ""
+        );
     }
 }

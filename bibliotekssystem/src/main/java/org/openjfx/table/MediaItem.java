@@ -5,6 +5,7 @@ public abstract class MediaItem {
     private String title;
     private int loanTypeId;
     private int antalExemplar;
+    private String creatorNames;
 
     public MediaItem(int titleId, String title, int loanTypeId, int antalExemplar) {
         this.titleId = titleId;
@@ -43,6 +44,14 @@ public abstract class MediaItem {
 
     public void setAntalExemplar(int antalExemplar) {
         this.antalExemplar = antalExemplar;
+    }
+
+    public String getCreatorNames() {
+        return creatorNames;
+    }
+
+    public void setCreatorNames(String creatorNames) {
+        this.creatorNames = creatorNames;
     }
 
     public abstract String getDetails();

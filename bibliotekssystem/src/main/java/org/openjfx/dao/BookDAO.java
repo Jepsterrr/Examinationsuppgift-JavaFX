@@ -79,14 +79,18 @@ public class BookDAO implements MediaItemDAO<Book> {
 
     @Override
     public List<Book> getAll() throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId, bf.namn AS forlag, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                    + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId";
+                   + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                   + "LEFT JOIN Bibblo.Bokförlag bf ON bf.bokutgivareId = b.bokutgivareId\n"
+                   + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
+                   + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
+                   + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId, bf.namn";
         List<Book> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Book(
+                    Book book = new Book(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
@@ -94,7 +98,10 @@ public class BookDAO implements MediaItemDAO<Book> {
                         rs.getString("ISBN"),
                         rs.getInt("antalSidor"),
                         rs.getInt("bokutgivareId")
-                    ));
+                    );
+                    book.setPublisherName(rs.getString("forlag"));
+                    book.setCreatorNames(rs.getString("kreatorer"));
+                    list.add(book);
                 }
             }
         }
@@ -103,10 +110,10 @@ public class BookDAO implements MediaItemDAO<Book> {
 
     @Override
     public List<Book> searchByTerm(String term) throws SQLException {
-        String sql = "SELECT DISTINCT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                    + "b.antalSidor, b.ISBN, b.bokutgivareId\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.antalSidor, b.ISBN, b.bokutgivareId, bf.namn AS forlag, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                     + "FROM Bibblo.Titel t\n"
                     + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
+                    + "LEFT JOIN Bibblo.Bokförlag bf ON bf.bokutgivareId = b.bokutgivareId\n"
                     + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
                     + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
                     + "LEFT JOIN Bibblo.TitelNyckelord tk ON tk.titelId = t.titelId\n"
@@ -115,7 +122,8 @@ public class BookDAO implements MediaItemDAO<Book> {
                     + "OR translate(b.ISBN, '-', '') ILIKE ?\n"
                     + "OR k.fNamn ILIKE ?\n"
                     + "OR k.eNamn ILIKE ?\n"
-                    + "OR nk.nyckelord ILIKE ?";
+                    + "OR nk.nyckelord ILIKE ?\n"
+                    + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId, bf.namn";
         List<Book> list = new ArrayList<>();
         String pattern = "%" + term + "%";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
@@ -126,7 +134,7 @@ public class BookDAO implements MediaItemDAO<Book> {
             ps.setString(5, pattern);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Book(
+                    Book book = new Book(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
@@ -134,7 +142,10 @@ public class BookDAO implements MediaItemDAO<Book> {
                         rs.getString("ISBN"),
                         rs.getInt("antalSidor"),
                         rs.getInt("bokutgivareId")
-                    ));
+                    );
+                    book.setPublisherName(rs.getString("forlag"));
+                    book.setCreatorNames(rs.getString("kreatorer"));
+                    list.add(book);
                 }
             }
         }

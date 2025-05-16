@@ -29,6 +29,11 @@ public class Article extends MediaItem {
 
     @Override
     public String getDetails() {
-        return " - Sidor: " + pages + " - Tidskrift: " + journal;
+        return String.format(
+            ", Sidor: %d, Tidskrift: %s, Författare: %s",
+            pages,
+            journal,
+            getCreatorNames() != null ? getCreatorNames() : ""
+        );
     }
 }

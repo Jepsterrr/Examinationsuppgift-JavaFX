@@ -72,20 +72,25 @@ public class DvdDAO implements MediaItemDAO<DVD> {
 
     @Override
     public List<DVD> getAll() throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                    + "FROM Bibblo.Titel t\n"
-                   + "JOIN Bibblo.DVD d ON d.titelId = t.titelId";
+                   + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
+                   + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
+                   + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
+                   + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin";
         List<DVD> list = new ArrayList<>();
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new DVD(
+                    DVD DVD = new DVD(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
                         rs.getInt("antalMin")
-                    ));
+                    );
+                    DVD.setCreatorNames(rs.getString("kreatorer"));
+                    list.add(DVD);
                 }
             }
         }
@@ -94,8 +99,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
 
     @Override
     public List<DVD> searchByTerm(String term) throws SQLException {
-        String sql = "SELECT DISTINCT t.titelId, t.titel, t.lanetypId, t.antalExemplar,\n"
-                    + "d.antalMin\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                     + "FROM Bibblo.Titel t\n"
                     + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
                     + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
@@ -105,7 +109,8 @@ public class DvdDAO implements MediaItemDAO<DVD> {
                     + "WHERE t.titel ILIKE ?\n"
                     + "OR k.fNamn ILIKE ?\n"
                     + "OR k.eNamn ILIKE ?\n"
-                    + "OR nk.nyckelord ILIKE ?";
+                    + "OR nk.nyckelord ILIKE ?\n"
+                    + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin";
         List<DVD> list = new ArrayList<>();
         String pattern = "%" + term + "%";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
@@ -115,13 +120,15 @@ public class DvdDAO implements MediaItemDAO<DVD> {
             ps.setString(4, pattern);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new DVD(
+                    DVD DVD = new DVD(
                         rs.getInt("titelId"),
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
                         rs.getInt("antalMin")
-                    ));
+                    );
+                    DVD.setCreatorNames(rs.getString("kreatorer"));
+                    list.add(DVD);
                 }
             }
         }
