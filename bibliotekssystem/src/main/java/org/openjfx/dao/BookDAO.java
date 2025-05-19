@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.Book;
 import org.openjfx.util.DBConnection;
@@ -15,7 +16,8 @@ public class BookDAO implements MediaItemDAO<Book> {
     public void add(Book b) throws SQLException {
         String sql = "INSERT INTO Bibblo.Titel(titelId, lanetypId, titel) VALUES (?, ?, ?);\n"
                    + "INSERT INTO Bibblo.Bok(titelId, antalSidor, ISBN, bokutgivareId) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, b.getTitleId());
             ps.setInt(2, b.getLoanTypeId());
             ps.setString(3, b.getTitle());
@@ -31,7 +33,8 @@ public class BookDAO implements MediaItemDAO<Book> {
     public void update(Book b) throws SQLException {
         String sql = "UPDATE Bibblo.Titel SET titel = ? WHERE titelId = ?;\n"
                    + "UPDATE Bibblo.Bok SET antalSidor = ?, ISBN = ?, bokutgivareId = ? WHERE titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getTitle());
             ps.setInt(2, b.getTitleId());
             ps.setInt(3, b.getNumberOfPages());
@@ -45,7 +48,8 @@ public class BookDAO implements MediaItemDAO<Book> {
     @Override
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM Bibblo.Titel WHERE titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -58,7 +62,8 @@ public class BookDAO implements MediaItemDAO<Book> {
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Bok b ON b.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -88,7 +93,8 @@ public class BookDAO implements MediaItemDAO<Book> {
                    + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
                    + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId, bf.namn";
         List<Book> list = new ArrayList<>();
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Book book = new Book(
@@ -128,7 +134,8 @@ public class BookDAO implements MediaItemDAO<Book> {
                     + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, b.ISBN, b.antalSidor, b.bokutgivareId, bf.namn";
         List<Book> list = new ArrayList<>();
         String pattern = "%" + term + "%";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pattern);
             ps.setString(2, pattern);
             ps.setString(3, pattern);

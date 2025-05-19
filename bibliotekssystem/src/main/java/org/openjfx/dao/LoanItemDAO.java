@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.LoanItem;
 import org.openjfx.util.DBConnection;
@@ -15,7 +16,8 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     @Override
     public void add(LoanItem li) throws SQLException {
         String sql = "INSERT INTO Bibblo.Låneföremål(låneFöremålId, lanId, Streckkod) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, li.getLoanItemId());
             ps.setInt(2, li.getLanId());
             ps.setString(3, li.getStreckkod());
@@ -26,7 +28,8 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     @Override
     public void update(LoanItem li) throws SQLException {
         String sql = "UPDATE Bibblo.Låneföremål SET returneratDatum=?, returnerasSenast=? WHERE låneFöremålId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDate(1, li.getReturnedDate() != null ? Date.valueOf(li.getReturnedDate()) : null);
             ps.setDate(2, Date.valueOf(li.getDueDate()));
             ps.setInt(3, li.getLoanItemId());
@@ -36,8 +39,9 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(
-             "DELETE FROM Bibblo.Låneföremål WHERE låneFöremålId=?")) {
+        String sql = "DELETE FROM Bibblo.Låneföremål WHERE låneFöremålId=?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -46,7 +50,8 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     @Override
     public LoanItem get(Integer id) throws SQLException {
         String sql = "SELECT * FROM Bibblo.Låneföremål WHERE låneFöremålId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -67,7 +72,8 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     public List<LoanItem> getAll() throws SQLException {
         List<LoanItem> list = new ArrayList<>();
         String sql = "SELECT * FROM Bibblo.Låneföremål";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new LoanItem(
@@ -85,7 +91,8 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     public List<LoanItem> findByLoan(int lanId) throws SQLException {
         List<LoanItem> list = new ArrayList<>();
         String sql = "SELECT låneFöremålId FROM Bibblo.Låneföremål WHERE lanId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, lanId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -99,7 +106,9 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
     public List<LoanItem> listOverdue() throws SQLException {
         List<LoanItem> list = new ArrayList<>();
         String sql = "SELECT låneFöremålId FROM Bibblo.Låneföremål WHERE returneratDatum IS NULL AND returnerasSenast < CURRENT_DATE";
-        try (ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(get(rs.getInt("låneFöremålId")));
             }

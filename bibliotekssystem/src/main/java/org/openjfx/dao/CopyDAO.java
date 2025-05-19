@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.Copy;
 import org.openjfx.util.DBConnection;
@@ -14,7 +15,8 @@ public class CopyDAO implements DAO<Copy, String> {
     @Override
     public void add(Copy e) throws SQLException {
         String sql = "INSERT INTO Bibblo.Copy(Streckkod, platsId, titelId, utlanad, Referenslitteratur) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getStreckkod());
             ps.setInt(2, e.getPlatsId());
             ps.setInt(3, e.getTitelId());
@@ -27,7 +29,8 @@ public class CopyDAO implements DAO<Copy, String> {
     @Override
     public void update(Copy e) throws SQLException {
         String sql = "UPDATE Bibblo.Copy SET platsId=?, titelId=?, utlanad=?, Referenslitteratur=? WHERE Streckkod=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, e.getPlatsId());
             ps.setInt(2, e.getTitelId());
             ps.setBoolean(3, e.isUtlanad());
@@ -39,8 +42,9 @@ public class CopyDAO implements DAO<Copy, String> {
 
     @Override
     public void delete(String barcode) throws SQLException {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(
-             "DELETE FROM Bibblo.Copy WHERE Streckkod=?")) {
+        String sql = "DELETE FROM Bibblo.Copy WHERE Streckkod=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, barcode);
             ps.executeUpdate();
         }
@@ -49,7 +53,8 @@ public class CopyDAO implements DAO<Copy, String> {
     @Override
     public Copy get(String barcode) throws SQLException {
         String sql = "SELECT * FROM Bibblo.Copy WHERE Streckkod=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, barcode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -70,8 +75,9 @@ public class CopyDAO implements DAO<Copy, String> {
     public List<Copy> getAll() throws SQLException {
         List<Copy> list = new ArrayList<>();
         String sql = "SELECT * FROM Bibblo.Exemplar";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new Copy(
                     rs.getString("Streckkod"),
@@ -88,7 +94,8 @@ public class CopyDAO implements DAO<Copy, String> {
     public List<Copy> findByTitleId(int titleId) throws SQLException {
         List<Copy> list = new ArrayList<>();
         String sql = "SELECT * FROM Bibblo.Copy WHERE titelId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, titleId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.User;
 import org.openjfx.util.DBConnection;
@@ -14,7 +15,8 @@ public class UserDAO implements DAO<User, Integer> {
     @Override
     public void add(User entity) throws SQLException {
         String sql = "INSERT INTO Bibblo.låntagare (anvandarnamn, losenord, epost) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, entity.getUsername());
             ps.setString(2, entity.getPassword());
             ps.setString(3, entity.getEmail());
@@ -25,7 +27,8 @@ public class UserDAO implements DAO<User, Integer> {
     @Override
     public void update(User entity) throws SQLException {
         String sql = "UPDATE Bibblo.låntagare SET anvandarnamn = ?, losenord = ?, epost = ? WHERE lantagareId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, entity.getUsername());
             ps.setString(2, entity.getPassword());
             ps.setString(3, entity.getEmail());
@@ -37,7 +40,8 @@ public class UserDAO implements DAO<User, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         String sql = "DELETE FROM Bibblo.låntagare WHERE lantagareId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, key);
             ps.executeUpdate();
         }
@@ -46,7 +50,8 @@ public class UserDAO implements DAO<User, Integer> {
     @Override
     public User get(Integer key) throws SQLException {
         String sql = "SELECT * FROM Bibblo.låntagare WHERE lantagareId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, key);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -69,7 +74,8 @@ public class UserDAO implements DAO<User, Integer> {
     @Override
     public List<User> getAll() throws SQLException {
         String sql = "SELECT * FROM Bibblo.låntagare";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             List<User> users = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) { 
                 while (rs.next()) {
@@ -92,7 +98,8 @@ public class UserDAO implements DAO<User, Integer> {
     public User findByUsername(String username) throws SQLException {
         String sql = "SELECT lantagarId, anvandarId, fnamn, enamn, epost, anvandarTypNamn, anvandarnamn, losenord " +
                      "FROM Bibblo.Låntagare WHERE anvandarnamn = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

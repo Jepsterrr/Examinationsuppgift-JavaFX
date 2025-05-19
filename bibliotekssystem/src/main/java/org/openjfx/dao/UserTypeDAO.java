@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.UserType;
 import org.openjfx.util.DBConnection;
@@ -14,7 +15,8 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
     @Override
     public void add(UserType ut) throws SQLException {
         String sql = "INSERT INTO Bibblo.Användartyp(anvandarId, typNamn, MaxAntalLan) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, ut.getAnvandarId());
             ps.setString(2, ut.getTypNamn());
             ps.setInt(3, ut.getMaxAntalLan());
@@ -25,7 +27,8 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
     @Override
     public void update(UserType ut) throws SQLException {
         String sql = "UPDATE Bibblo.Användartyp SET typNamn=?, MaxAntalLan=? WHERE anvandarId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, ut.getTypNamn());
             ps.setInt(2, ut.getMaxAntalLan());
             ps.setInt(3, ut.getAnvandarId());
@@ -35,8 +38,9 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(
-             "DELETE FROM Bibblo.Användartyp WHERE anvandarId=?")) {
+        String sql = "DELETE FROM Bibblo.Användartyp WHERE anvandarId=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -45,7 +49,8 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
     @Override
     public UserType get(Integer id) throws SQLException {
         String sql = "SELECT * FROM Bibblo.Användartyp WHERE anvandarId=?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -64,8 +69,9 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
     public List<UserType> getAll() throws SQLException {
         List<UserType> list = new ArrayList<>();
         String sql = "SELECT * FROM Bibblo.Användartyp";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new UserType(
                     rs.getInt("anvandarId"),

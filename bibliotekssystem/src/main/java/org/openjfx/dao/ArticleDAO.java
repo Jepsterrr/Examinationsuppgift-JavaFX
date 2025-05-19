@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import org.openjfx.table.Article;
 import org.openjfx.util.DBConnection;
@@ -15,7 +16,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
     public void add(Article a) throws SQLException {
         String sql = "INSERT INTO Bibblo.Titel(titelId, lanetypId, titel) VALUES (?, ?, ?);\n"
                    + "INSERT INTO Bibblo.Artikel(titelId, artikelSidor, tidsskrift) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, a.getTitleId());
             ps.setInt(2, a.getLoanTypeId());
             ps.setString(3, a.getTitle());
@@ -30,7 +32,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
     public void update(Article a) throws SQLException {
         String sql = "UPDATE Bibblo.Titel SET titel = ? WHERE titelId = ?;\n"
                    + "UPDATE Bibblo.Artikel SET artikelSidor = ?, tidsskrift = ? WHERE titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, a.getTitle());
             ps.setInt(2, a.getTitleId());
             ps.setInt(3, a.getPages());
@@ -43,7 +46,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
     @Override
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM Bibblo.Titel WHERE titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -55,7 +59,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -83,7 +88,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                    + "LEFT JOIN Bibblo.Kreatör k ON k.personID = ks.personID\n"
                    + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift";
         List<Article> list = new ArrayList<>();
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Article article = new Article(
@@ -120,7 +126,8 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                     + "GROUP BY t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift";
         List<Article> list = new ArrayList<>();
         String pattern = "%" + term + "%";
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pattern);
             ps.setString(2, pattern);
             ps.setString(3, pattern);
