@@ -15,7 +15,7 @@ public class AdminViewController {
 
     @FXML
     private void btnList() throws IOException {
-        App.setRoot("MainView");
+        App.setRoot("LoanOverview");
     }
 
     @FXML

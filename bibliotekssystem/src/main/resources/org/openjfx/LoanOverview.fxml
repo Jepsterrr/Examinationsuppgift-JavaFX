@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.LoanOverview">
+  <top>
+    <fx:include source="NavBar.fxml" />
+  </top>
+  <center>
+    <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #f2f2f2;">
+      <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+      <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lånöversikt">
+          <font>
+            <Font name="System Bold" size="24.0" />
+          </font>
+          <VBox.margin>
+            <Insets bottom="10.0" />
+          </VBox.margin>
+        </Text>
+            <VBox prefHeight="102.0" prefWidth="780.0">
+               <children>
+                  <CheckBox fx:id="checkBoxOnlyLate" mnemonicParsing="false" text="Visa endast lån där objekt är försenade">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+                  <DatePicker fx:id="filterDatePicker" promptText="Returnerat senast">
+                     <VBox.margin>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </VBox.margin>
+                  </DatePicker>
+               </children>
+            </VBox>
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+          <children>
+            <VBox HBox.hgrow="NEVER">
+              <children>
+                <Text text="Aktuella Lån">
+                  <font>
+                    <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                    <Insets bottom="5.0" />
+                  </VBox.margin>
+                </Text>
+                <ListView fx:id="loanListView" maxWidth="350.0" prefHeight="400.0" prefWidth="300.0" VBox.vgrow="ALWAYS" />
+              </children>
+            </VBox>
+
+            <VBox HBox.hgrow="ALWAYS">
+              <children>
+                <Text text="Objekt i valt lån">
+                   <font>
+                    <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                    <Insets bottom="5.0" />
+                  </VBox.margin>
+                </Text>
+                <ListView fx:id="loanItemListView" prefHeight="400.0" style="-fx-background-color: #E6E6FA; -fx-border-color: #8A2BE2; -fx-border-width: 1px;" VBox.vgrow="ALWAYS" /> 
+                                </children>
+            </VBox>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
+</BorderPane>

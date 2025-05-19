@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,4 +101,30 @@ public class LoanDAO implements DAO<Loan, Integer> {
         }
         return list;
     }
+
+    public List<Loan> getLoansWithOverdueItems(LocalDate referenceDate) throws SQLException {
+        List<Loan> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT l.* " + // DISTINCT är viktigt om ett lån har flera försenade objekt
+                     "FROM Bibblo.Lån l " +
+                     "JOIN Bibblo.Låneföremål li ON l.lanId = li.lanId " +
+                     "WHERE li.returneratDatum IS NULL AND li.returnerasSenast < ?";
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
+            ps.setDate(1, Date.valueOf(referenceDate)); // Konvertera LocalDate till java.sql.Date
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Antag att du har en konstruktor eller metod för att skapa Loan-objekt från ResultSet
+                    list.add(new Loan(
+                        rs.getInt("lanId"),
+                        rs.getInt("lantagarId"),
+                        rs.getDate("låneDatum").toLocalDate(),
+                        rs.getDate("aterlamningsDatum") != null ? rs.getDate("aterlamningsDatum").toLocalDate() : null,
+                        rs.getDate("returDatum") != null ? rs.getDate("returDatum").toLocalDate() : null
+                    ));
+                }
+            }
+        }
+        return list;
+    }
+
+
 }
