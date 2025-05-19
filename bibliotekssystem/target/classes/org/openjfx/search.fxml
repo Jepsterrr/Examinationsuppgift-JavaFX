@@ -2,45 +2,94 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.SearchController">
   <top>
     <fx:include source="NavBar.fxml" />
   </top>
   <center>
-      <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f2f2f2;">
-         <padding>
+    <StackPane fx:id="mainStackPane">
+      <children>
+        <VBox fx:id="searchViewVBox" alignment="CENTER" spacing="20.0" style="-fx-background-color: #f2f2f2;">
+          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <children>
-            <HBox prefHeight="153.0" prefWidth="571.0" spacing="50.0">
-               <children>
-                  <TextField fx:id="searchBox" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#checkEmpty" prefHeight="26.0" prefWidth="377.0" promptText="Sök på bok" snapToPixel="false">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#updateSearch" prefHeight="25.0" prefWidth="86.0" text="Sök" style="-fx-background-color:#3498DB; -fx-text-fill:white">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
+          </padding>
+          <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="780.0" spacing="30.0">
+              <children>
+                <TextField fx:id="searchBox" onAction="#checkEmpty" prefHeight="30.0" prefWidth="377.0" promptText="Sök på titel, författare, ISBN..." HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                    <Insets />
+                  </HBox.margin>
+                </TextField>
+                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#updateSearch" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color:#3498DB; -fx-text-fill:white;" text="Sök" />
+              </children>
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
             </HBox>
-            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #2F2F2F;">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-   </center>
+            <ListView fx:id="listView" prefHeight="367.0" prefWidth="780.0" VBox.vgrow="ALWAYS" />
+          </children>
+        </VBox>
+
+        <VBox fx:id="detailDialogPane" alignment="TOP_CENTER" spacing="15.0" 
+              visible="false" managed="false" 
+              style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #B0B0B0; -fx-border-width: 1;" 
+              maxWidth="500.0" maxHeight="450.0" prefHeight="400.0">
+          <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+          <effect>
+            <DropShadow>
+              <color>
+                <Color opacity="0.3" />
+              </color>
+            </DropShadow>
+          </effect>
+          <children>
+            <Label fx:id="dialogItemTitleLabel" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" text="Titel på Objektet">
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
+            </Label>
+            
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent;">
+                <content>
+                    <VBox spacing="8.0">
+                        <Label fx:id="dialogItemAuthorLabel" text="Författare: Information här" wrapText="true" />
+                        <Label fx:id="dialogItemYearLabel" text="Utgivningsår: Information här" wrapText="true" />
+                        <Label fx:id="dialogItemTypeLabel" text="Typ: Information här" wrapText="true" />
+                        <Label fx:id="dialogItemISBNLabel" text="ISBN: Information här" wrapText="true" />
+                        <Text fx:id="dialogItemDescriptionText" wrappingWidth="440" text="Beskrivning: Längre text om objektet kommer här. Denna text kan vara flerradig och behöver kunna scrollas om den blir för lång." />
+                        </VBox>
+                </content>
+            </ScrollPane>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+              <VBox.margin>
+                <Insets top="20.0" />
+              </VBox.margin>
+              <children>
+                <Button fx:id="dialogBorrowButton" mnemonicParsing="false" onAction="#handleDialogBorrowAction" prefHeight="30.0" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Låna" />
+                <Button fx:id="dialogBackButton" mnemonicParsing="false" onAction="#handleDialogBackAction" prefHeight="30.0" text="Gå tillbaka" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </center>
 </BorderPane>
