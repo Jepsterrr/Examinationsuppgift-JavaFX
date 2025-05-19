@@ -47,11 +47,6 @@ public class MainViewController {
     }
 
     @FXML
-    private void pressButton() throws IOException {
-        System.out.println("Button pressed");
-    }
-
-    @FXML
     private void btnProfile() throws IOException {
         App.setRoot("ProfileView");
     }

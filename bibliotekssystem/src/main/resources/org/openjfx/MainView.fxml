@@ -37,18 +37,6 @@
                         </Pane>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#pressButton" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Om oss">
-                     <graphic>
-                        <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <children>
-                              <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Sök på tillgängligt material som finns i biblioteket" wrapText="true" />
-                           </children>
-                        </Pane>
-                     </graphic>
-                  </Button>
                   <Button fx:id="profileButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnProfile" prefHeight="150.0" prefWidth="150.0" visible="false" managed="false" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Profil">
                      <graphic>
                         <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
