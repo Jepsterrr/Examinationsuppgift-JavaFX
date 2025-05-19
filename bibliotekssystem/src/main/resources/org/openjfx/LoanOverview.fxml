@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -26,6 +28,20 @@
             <Insets bottom="10.0" />
           </VBox.margin>
         </Text>
+            <VBox prefHeight="102.0" prefWidth="780.0">
+               <children>
+                  <CheckBox fx:id="checkBoxOnlyLate" mnemonicParsing="false" text="Visa endast lån där objekt är försenade">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="20.0" />
+                     </VBox.margin>
+                  </CheckBox>
+                  <DatePicker fx:id="filterDatePicker" promptText="Returnerat senast">
+                     <VBox.margin>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </VBox.margin>
+                  </DatePicker>
+               </children>
+            </VBox>
         <HBox spacing="20.0" VBox.vgrow="ALWAYS">
           <children>
             <VBox HBox.hgrow="NEVER">
@@ -38,7 +54,7 @@
                     <Insets bottom="5.0" />
                   </VBox.margin>
                 </Text>
-                <ListView fx:id="loanListView" prefHeight="400.0" prefWidth="300.0" maxWidth="350.0" VBox.vgrow="ALWAYS" />
+                <ListView fx:id="loanListView" maxWidth="350.0" prefHeight="400.0" prefWidth="300.0" VBox.vgrow="ALWAYS" />
               </children>
             </VBox>
 
@@ -52,7 +68,7 @@
                     <Insets bottom="5.0" />
                   </VBox.margin>
                 </Text>
-                <ListView fx:id="loanItemListView" prefHeight="400.0" VBox.vgrow="ALWAYS" style="-fx-background-color: #E6E6FA; -fx-border-color: #8A2BE2; -fx-border-width: 1px;" /> 
+                <ListView fx:id="loanItemListView" prefHeight="400.0" style="-fx-background-color: #E6E6FA; -fx-border-color: #8A2BE2; -fx-border-width: 1px;" VBox.vgrow="ALWAYS" /> 
                                 </children>
             </VBox>
           </children>

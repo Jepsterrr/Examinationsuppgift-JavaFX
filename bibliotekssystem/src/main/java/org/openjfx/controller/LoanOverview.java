@@ -1,6 +1,7 @@
 package org.openjfx.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList; // Importera ArrayList
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.openjfx.table.Loan;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label; // Importera Label för placeholder-text
 
 public class LoanOverview {
@@ -24,6 +27,12 @@ public class LoanOverview {
 
     @FXML
     private ListView<LoanItem> loanItemListView;
+
+    @FXML 
+    private CheckBox checkBoxOnlyLate;
+
+    @FXML
+    private DatePicker filterDatePicker;
 
     @FXML
     public void initialize() {
@@ -77,9 +86,11 @@ public class LoanOverview {
 
         // Sätt upp lyssnaren för val i loanListView
         setupLoanSelectionListener();
+        setupFilterControlsListeners();
     }
 
     private void loadAllLoans() {
+        System.out.println("loadAllLoans() anropad");
         if (loanListView == null) {
              System.err.println("FEL: loanListView är null i loadAllLoans(). Kan inte ladda lån.");
             return;
@@ -95,11 +106,10 @@ public class LoanOverview {
         }
     }
 
-    /**
-     * Sätter upp en lyssnare på loanListView för att uppdatera loanItemListView
-     * när ett lån väljs.
-     */
+    
+     //Sätter upp en lyssnare på loanListView för att uppdatera loanItemListView när ett lån väljs.
     private void setupLoanSelectionListener() {
+        System.out.println("setupLoanSelectionListener() anropad");
         if (loanListView != null && loanItemListView != null) {
             loanListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
@@ -123,4 +133,57 @@ public class LoanOverview {
             });
         }
     }
+
+    private void setupFilterControlsListeners() {
+        System.out.println("setupFilterControlsListeners() anropad");
+        if (checkBoxOnlyLate != null) {
+            checkBoxOnlyLate.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                updateDisplayedLoans();
+            });
+        }
+
+        if (filterDatePicker != null) {
+            // Används som referensdatum för "försenade" om checkboxen är ikryssad.
+            // Om checkboxen inte är ikryssad, kan detta datum användas för annan filtrering
+            // (t.ex. visa lån med objekt som förfaller efter detta datum), men det är inte implementerat än.
+            filterDatePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+                if (checkBoxOnlyLate.isSelected()) { // Uppdatera endast om checkboxen är aktiv, eller alltid om du vill
+                    updateDisplayedLoans();
+                }
+                // Här kan du lägga till logik om DatePicker ska filtrera även när checkboxen inte är ikryssad.
+            });
+        }
+    }
+
+    private void updateDisplayedLoans() {
+        System.out.println("updateDisplayedLoans() anropad");
+        if (loanListView == null) {
+            System.err.println("FEL: loanListView är null i updateDisplayedLoans().");
+            return;
+        }
+
+        List<Loan> loansToDisplay = new ArrayList<>();
+        try {
+            if (checkBoxOnlyLate != null && checkBoxOnlyLate.isSelected()) {
+                LocalDate referenceDate = (filterDatePicker != null && filterDatePicker.getValue() != null)
+                                          ? filterDatePicker.getValue()
+                                          : LocalDate.now(); // Använd dagens datum om DatePicker är tom
+                loansToDisplay = loanDao.getLoansWithOverdueItems(referenceDate);
+            } else {
+                // Om checkboxen inte är ikryssad, visa alla lån.
+                // Här kan du senare lägga till ytterligare filtrering baserat på filterDatePicker om det är önskvärt
+                // för "visa lån med objekt som förfaller efter valt datum".
+                loansToDisplay = loanDao.getAll();
+            }
+            loanListView.getItems().setAll(loansToDisplay);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            loanListView.getItems().clear();
+            System.err.println("Ett fel uppstod vid hämtning av lån: " + e.getMessage());
+            // Visa felmeddelande för användaren (t.ex. Alert)
+        }
+    }
+
+
+
 }
