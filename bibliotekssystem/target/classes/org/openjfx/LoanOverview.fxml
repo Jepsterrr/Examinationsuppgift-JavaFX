@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.LoanOverview">
@@ -12,24 +13,51 @@
     <fx:include source="NavBar.fxml" />
   </top>
   <center>
-      <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f2f2f2;">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <children>
-            <HBox prefHeight="153.0" prefWidth="571.0" spacing="50.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lånöversikt" />
-               </children></HBox>
-            <VBox alignment="CENTER" prefHeight="514.0" prefWidth="780.0" spacing="20.0" style="-fx-background-color: #2F2F2F;">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" />
-               </children>
+    <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #f2f2f2;">
+      <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+      <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lånöversikt">
+          <font>
+            <Font name="System Bold" size="24.0" />
+          </font>
+          <VBox.margin>
+            <Insets bottom="10.0" />
+          </VBox.margin>
+        </Text>
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+          <children>
+            <VBox HBox.hgrow="NEVER">
+              <children>
+                <Text text="Aktuella Lån">
+                  <font>
+                    <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                    <Insets bottom="5.0" />
+                  </VBox.margin>
+                </Text>
+                <ListView fx:id="loanListView" prefHeight="400.0" prefWidth="300.0" maxWidth="350.0" VBox.vgrow="ALWAYS" />
+              </children>
             </VBox>
-         </children>
-      </VBox>
-   </center>
+
+            <VBox HBox.hgrow="ALWAYS">
+              <children>
+                <Text text="Objekt i valt lån">
+                   <font>
+                    <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                    <Insets bottom="5.0" />
+                  </VBox.margin>
+                </Text>
+                <ListView fx:id="loanItemListView" prefHeight="400.0" VBox.vgrow="ALWAYS" style="-fx-background-color: #E6E6FA; -fx-border-color: #8A2BE2; -fx-border-width: 1px;" /> 
+                                </children>
+            </VBox>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
 </BorderPane>
