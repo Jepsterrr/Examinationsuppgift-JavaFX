@@ -39,7 +39,7 @@ public class LoanManager {
         
     }
 
-    private boolean isEligibleForLoan(int userId) {
+    public boolean isEligibleForLoan(int userId) {
         // Implement logic to check if the loan is eligible
         /* 
          * Varje låntagare har en begränsning för hur många objekt som får lånas samtidigt.
@@ -47,6 +47,6 @@ public class LoanManager {
         universitetsanställda eller allmänheten)    
          */
         return false;
-    }
+    }  
 }
 

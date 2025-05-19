@@ -2,7 +2,7 @@ package org.openjfx.table;
 
 public class User {
     private int loanUserId;
-    private int userId;
+    private int loanTypeId;
     private String firstName;
     private String lastName;
     private final String username;
@@ -10,9 +10,9 @@ public class User {
     private String userType;
     private String password;
 
-    public User(int loanUserId, int userId, String firstName, String lastName, String username, String email, String userType, String password) {
+    public User(int loanUserId, int loanTypeId, String firstName, String lastName, String username, String email, String userType, String password) {
         this.loanUserId = loanUserId;
-        this.userId = userId;
+        this.loanTypeId = loanTypeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = firstName.substring(0, Math.min(3, firstName.length())) + lastName.substring(0, Math.min(3, lastName.length()));
@@ -29,12 +29,12 @@ public class User {
         this.loanUserId = loanUserId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getloanTypeId() {
+        return loanTypeId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void loanTypeId(int loanTypeId) {
+        this.loanTypeId = loanTypeId;
     }
 
     public String getFirstName() {
