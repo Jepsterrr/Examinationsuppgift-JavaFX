@@ -7,11 +7,12 @@ public abstract class MediaItem {
     private int antalExemplar;
     private String creatorNames;
 
-    public MediaItem(int titleId, String title, int loanTypeId, int antalExemplar) {
+    public MediaItem(int titleId, String title, int loanTypeId, int antalExemplar, String creatorNames) {
         this.titleId = titleId;
         this.title = title;
         this.loanTypeId = loanTypeId;
         this.antalExemplar = antalExemplar;
+        this.creatorNames = creatorNames;
     }
 
     public int getTitleId() {

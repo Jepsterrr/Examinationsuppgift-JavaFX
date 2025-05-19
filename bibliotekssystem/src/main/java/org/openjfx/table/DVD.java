@@ -3,9 +3,9 @@ package org.openjfx.table;
 public class DVD extends MediaItem {
     private int durationMinutes;
 
-    public DVD(int titleId, String title, int loanTypeId, int antalExemplar,
+    public DVD(int titleId, String title, int loanTypeId, int antalExemplar, String creatorNames,
                int durationMinutes) {
-        super(titleId, title, loanTypeId, antalExemplar);
+        super(titleId, title, loanTypeId, antalExemplar, creatorNames);
         this.durationMinutes = durationMinutes;
     }
 

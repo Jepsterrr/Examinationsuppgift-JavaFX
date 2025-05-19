@@ -6,9 +6,9 @@ public class Book extends MediaItem {
     private int publisherId;
     private String publisherName;
 
-    public Book(int titleId, String title, int loanTypeId, int antalExemplar, 
+    public Book(int titleId, String title, int loanTypeId, int antalExemplar, String creatorNames,
                 String isbn, int numberOfPages, int publisherId) {
-        super(titleId, title, loanTypeId, antalExemplar);
+        super(titleId, title, loanTypeId, antalExemplar, creatorNames);
         this.numberOfPages = numberOfPages;
         this.publisherId = publisherId;
         this.isbn = isbn;

@@ -1,69 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.openjfx.controller.EditViewController"
-            minWidth="820" minHeight="640">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.EditViewController" minWidth="820" minHeight="640">
 
   <top>
     <fx:include source="NavBar.fxml"/>
   </top>
 
   <center>
-    <VBox spacing="20" style="-fx-background-color:#f2f2f2;" alignment="TOP_CENTER">
+    <VBox spacing="20" alignment="TOP_CENTER" style="-fx-background-color:#f2f2f2;">
       <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
       </padding>
 
-      <!-- Välj typ -->
+      <!-- Typväljare -->
       <HBox spacing="10">
         <Label text="Typ:"/>
-        <ChoiceBox fx:id="typeSelector" prefWidth="150"/>
+        <ChoiceBox fx:id="typeSelector" prefWidth="150">
+          <tooltip><Tooltip text="Välj om du vill hantera Böcker, DVD eller Artiklar"/></tooltip>
+        </ChoiceBox>
       </HBox>
 
       <SplitPane dividerPositions="0.3" prefHeight="500" prefWidth="780">
 
-        <!-- Vänster: lista över alla media -->
-        <ListView fx:id="listView" prefWidth="240"/>
+        <!-- Lista med media -->
+        <ListView fx:id="listView" prefWidth="240">
+          <tooltip><Tooltip text="Klicka för att redigera"/></tooltip>
+        </ListView>
 
-        <!-- Höger: formulär -->
-        <VBox fx:id="formBox" spacing="10" style="-fx-background-color:white; -fx-border-color:#ccc; -fx-border-width:1;">
+        <!-- Höger sida: formulär + knappar -->
+        <VBox spacing="10" style="-fx-background-color:white; -fx-border-color:#ccc; -fx-border-width:1;">
           <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
           </padding>
 
-          <!-- Gemensamma fält -->
-          <Label text="TitelId:"/>
-          <TextField fx:id="fldTitleId" editable="false"/>
-          <Label text="Titel:"/>
-          <TextField fx:id="fldTitle"/>
-          <Label text="LånetypId:"/>
-          <TextField fx:id="fldLoanTypeId"/>
-          <Label text="Antal exemplar:"/>
-          <TextField fx:id="fldExCount"/>
+          <!-- Här fyller vi på dynamiskt -->
+          <VBox fx:id="formBox" spacing="10"/>
 
-          <!-- Bok-specifikt, DVD- eller Artikel-fält läggs dynamiskt -->
-
-          <!-- Knapprad -->
+          <!-- Knapp-raden ligger utanför formBox -->
           <HBox spacing="10" alignment="CENTER">
-            <Button text="Ny"    onAction="#onNew"    prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
-            <Button text="Spara" onAction="#onSave"   prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
-            <Button text="Ta bort" onAction="#onDelete" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
-            <Button text="Tillbaka" onAction="#onBack" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button fx:id="btnNew" text="Ny" onAction="#onNew" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button fx:id="btnSave" text="Spara" onAction="#onSave" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button fx:id="btnDelete" text="Ta bort" onAction="#onDelete" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
+            <Button fx:id="btnBack" text="Tillbaka" onAction="#onBack" prefWidth="80" style="-fx-background-color:#3498DB; -fx-text-fill:white"/>
           </HBox>
-        </VBox>
 
+          <!-- Här visas hover‐informationen -->
+          <Label fx:id="infoLabel" textFill="#555" wrapText="true"/>
+
+        </VBox>
       </SplitPane>
     </VBox>
   </center>

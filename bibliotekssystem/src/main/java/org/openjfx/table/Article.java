@@ -4,9 +4,9 @@ public class Article extends MediaItem {
     private int pages;
     private String journal;
 
-    public Article(int titleId, String title, int loanTypeId, int antalExemplar,
+    public Article(int titleId, String title, int loanTypeId, int antalExemplar, String creatorNames,
                    int pages, String journal) {
-        super(titleId, title, loanTypeId, antalExemplar);
+        super(titleId, title, loanTypeId, antalExemplar, creatorNames);
         this.pages = pages;
         this.journal = journal;
     }

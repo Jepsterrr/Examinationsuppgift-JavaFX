@@ -49,7 +49,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
 
     @Override
     public DVD get(int id) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, d.antalMin, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.DVD d ON d.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
@@ -62,6 +62,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("antalMin")
                     );
                 }
@@ -87,6 +88,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("antalMin")
                     );
                     DVD.setCreatorNames(rs.getString("kreatorer"));
@@ -125,6 +127,7 @@ public class DvdDAO implements MediaItemDAO<DVD> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("antalMin")
                     );
                     DVD.setCreatorNames(rs.getString("kreatorer"));

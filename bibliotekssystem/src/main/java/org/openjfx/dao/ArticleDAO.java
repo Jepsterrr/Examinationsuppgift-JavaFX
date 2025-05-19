@@ -51,7 +51,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
 
     @Override
     public Article get(int id) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                    + "FROM Bibblo.Titel t\n"
                    + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
                    + "WHERE t.titelId = ?";
@@ -64,6 +64,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("artikelSidor"),
                         rs.getString("tidsskrift")
                     );
@@ -90,6 +91,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("artikelSidor"),
                         rs.getString("tidsskrift")
                     );
@@ -131,6 +133,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
                         rs.getString("titel"),
                         rs.getInt("lanetypId"),
                         rs.getInt("antalExemplar"),
+                        rs.getString("kreatorer"),
                         rs.getInt("artikelSidor"),
                         rs.getString("tidsskrift")
                     );
