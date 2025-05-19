@@ -14,7 +14,7 @@ public class CopyDAO implements DAO<Copy, String> {
 
     @Override
     public void add(Copy e) throws SQLException {
-        String sql = "INSERT INTO Bibblo.Copy(Streckkod, platsId, titelId, utlanad, Referenslitteratur) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Bibblo.exemplar(Streckkod, platsId, titelId, utlanad, Referenslitteratur) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getStreckkod());
@@ -28,7 +28,7 @@ public class CopyDAO implements DAO<Copy, String> {
 
     @Override
     public void update(Copy e) throws SQLException {
-        String sql = "UPDATE Bibblo.Copy SET platsId=?, titelId=?, utlanad=?, Referenslitteratur=? WHERE Streckkod=?";
+        String sql = "UPDATE Bibblo.exemplar SET platsId=?, titelId=?, utlanad=?, Referenslitteratur=? WHERE Streckkod=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, e.getPlatsId());
@@ -42,7 +42,7 @@ public class CopyDAO implements DAO<Copy, String> {
 
     @Override
     public void delete(String barcode) throws SQLException {
-        String sql = "DELETE FROM Bibblo.Copy WHERE Streckkod=?";
+        String sql = "DELETE FROM Bibblo.exemplar WHERE Streckkod=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, barcode);
@@ -52,7 +52,7 @@ public class CopyDAO implements DAO<Copy, String> {
 
     @Override
     public Copy get(String barcode) throws SQLException {
-        String sql = "SELECT * FROM Bibblo.Copy WHERE Streckkod=?";
+        String sql = "SELECT * FROM Bibblo.exemplar WHERE Streckkod=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, barcode);
@@ -93,7 +93,7 @@ public class CopyDAO implements DAO<Copy, String> {
 
     public List<Copy> findByTitleId(int titleId) throws SQLException {
         List<Copy> list = new ArrayList<>();
-        String sql = "SELECT * FROM Bibblo.Copy WHERE titelId=?";
+        String sql = "SELECT * FROM Bibblo.exemplar WHERE titelId=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, titleId);

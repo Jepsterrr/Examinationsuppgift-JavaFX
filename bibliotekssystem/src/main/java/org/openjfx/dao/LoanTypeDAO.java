@@ -34,11 +34,42 @@ public class LoanTypeDAO {
         return typnamn;
     }
 
+    public int getLoanTypeId(int titelId) throws SQLException {
+            int lanetypId = 0;
+            String sql = "SELECT lanetypId FROM Bibblo.titel WHERE titelid = ?"; // Notera gemener i "titelid" här
+
+            try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, titelId); 
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        lanetypId = rs.getInt("lanetypId");
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // Om ingen matchande rad hittas, returneras det initiala värdet av lanetypId (0).
+            // Fundera på om 0 är ett lämpligt värde för "hittades ej", eller om du borde
+            // returnera t.ex. -1, eller kasta ett eget undantag (t.ex. NotFoundException).
+            return lanetypId;
+        }
+
     public int getLoanTime(int lanetypId) throws SQLException {
         int loantime = 0;
-        String sql = "SELECT lanetid FROM Bibblo.lånetyp WHERE lånetypId = ?";
+        String sql = "SELECT lanetid FROM Bibblo.lånetyp WHERE lanetypId = ?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, lanetypId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    loantime = rs.getInt("lanetid");
+                    return loantime;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return loantime;
     }
-
-    
 }

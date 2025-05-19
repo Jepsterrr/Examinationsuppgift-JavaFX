@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openjfx.dao.CopyDAO;
+import org.openjfx.dao.LoanItemDAO;
+import org.openjfx.dao.LoanTypeDAO;
+import org.openjfx.dao.MediaItemDAO;
 import org.openjfx.table.Copy;
 import org.openjfx.table.Loan;
+import org.openjfx.table.MediaItem;
+
 
 public class LoanManager {
     
@@ -17,15 +22,26 @@ public class LoanManager {
     }
 
 
-    public Copy makeSuggestionForCopy() {
-
+    public static Copy getAvailableObjects(int titelId) {
+        // Först ta fram alla exemplar av titeln
+        // och sedan kolla om något av dem är tillgängligt
         CopyDAO copyDAO = new CopyDAO();
+    
+        LoanTypeDAO loanTypeDAO = new LoanTypeDAO();
         List<Copy> copies = new ArrayList<>();
         try {
-            copies = copyDAO.getAll();
+            //Hämta lånetypen för titeln
+            int loanTypeid = loanTypeDAO.getLoanTypeId(titelId);
+            //Om lånetiden för typen är 0, returneras null
+            if (loanTypeDAO.getLoanTime(loanTypeid) == 0) {
+                return null;
+            } else {
+            copies = copyDAO.findByTitleId(titelId);
+            System.out.println(copies);
             for (Copy copy : copies) {
-            if (!copy.isUtlanad()) {
+            if (!copy.isUtlanad() ) {
                 return copy;
+            }
             }
         }
         } catch (Exception e) {

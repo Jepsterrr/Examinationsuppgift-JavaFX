@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.openjfx.service.SearchService;
+import org.openjfx.table.Copy;
 import org.openjfx.table.MediaItem;
 import org.openjfx.util.DetailHelper;
 import org.openjfx.App;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.openjfx.service.LoanManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,6 +154,15 @@ public class SearchController {
     private void handleDialogBorrowAction() {
         if (currentMediaItemInDialog != null) {
             System.out.println("Försöker låna: " + currentMediaItemInDialog.getTitle());
+            Copy suggestion = LoanManager.getAvailableObjects(currentMediaItemInDialog.getTitleId());
+            System.out.println("TitelID: " + currentMediaItemInDialog.getTitleId());
+            if (suggestion != null) {
+                System.out.println("Förslag på exemplar: " + suggestion.getStreckkod());
+                dialogItemDescriptionText.setText("Objekt med streckkod: " + suggestion.getStreckkod() + " är tillgänglig för utlån. Du hittar den i sektion " + suggestion.getPlatsId());
+            } else {
+                System.out.println("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
+                dialogItemDescriptionText.setText("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
+            }
             // Här implementerar du logiken för att låna boken/mediet.
             // Detta kan involvera anrop till en LoanService eller LoanDAO.
             // Exempel:
