@@ -48,11 +48,7 @@ public class LoanManager {
             e.printStackTrace();
             return null;
         }
-
         return null;
-        
-      
-        
     }
 
     public boolean isEligibleForLoan(int userId) {
