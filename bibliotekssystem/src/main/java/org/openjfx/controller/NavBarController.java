@@ -46,7 +46,7 @@ public class NavBarController {
         String view = App.getCurrentSceneName();
         App.setRoot(view);
 
-        if (App.getCurrentSceneName().equals("ProfileView") || App.getCurrentSceneName().equals("AdminView")) {
+        if (!"search".equals(App.getCurrentSceneName())) {
             App.setRoot("MainView");
         }
     }

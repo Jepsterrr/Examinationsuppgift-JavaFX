@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.CreateLoanController">
+<BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.ReturnViewController">
   <top>
     <fx:include source="NavBar.fxml" />
   </top>
@@ -19,7 +19,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="40.0" />
       </padding>
       <children>
-        <Label text="Registrera Nytt Lån">
+        <Label text="Returnera utlånat material">
           <font>
             <Font name="System Bold" size="24.0" />
           </font>
@@ -38,7 +38,7 @@
           </VBox.margin>
         </HBox>
 
-        <Button mnemonicParsing="false" onAction="#initLoan" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color:#3498DB; -fx-text-fill:white;" text="Registrera Lån">
+        <Button mnemonicParsing="false" onAction="#initReturn" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color:#3498DB; -fx-text-fill:white;" text="Returnera material">
           <VBox.margin>
             <Insets top="10.0" />
           </VBox.margin>

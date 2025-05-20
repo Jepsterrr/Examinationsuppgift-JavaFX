@@ -10,13 +10,13 @@ import javafx.scene.control.Button;
 public class MainViewController {
 
     @FXML
-    private Button profileButton;
-
-    @FXML
     private Button adminButton;
 
     @FXML
     private Button loanButton;
+
+    @FXML
+    private Button returnButton;
 
     @FXML
     public void initialize() {
@@ -29,10 +29,10 @@ public class MainViewController {
 
         adminButton.setVisible(isAdmin);
         adminButton.setManaged(isAdmin);
-        profileButton.setVisible(loggedIn && !isAdmin);
-        profileButton.setManaged(loggedIn && !isAdmin);
         loanButton.setVisible(loggedIn && !isAdmin);
         loanButton.setManaged(loggedIn && !isAdmin);
+        returnButton.setVisible(loggedIn && !isAdmin);
+        returnButton.setManaged(loggedIn && !isAdmin);
     }
 
     @FXML
@@ -52,11 +52,6 @@ public class MainViewController {
     }
 
     @FXML
-    private void btnProfile() throws IOException {
-        App.setRoot("ProfileView");
-    }
-
-    @FXML
     private void btnAdmin() throws IOException {
         App.setRoot("AdminView");
     }
@@ -64,5 +59,10 @@ public class MainViewController {
     @FXML
     private void btnLoan() throws IOException {
         App.setRoot("CreateLoanView");
+    }
+
+    @FXML
+    private void btnReturn() throws IOException {
+        App.setRoot("ReturnView");
     }
 }

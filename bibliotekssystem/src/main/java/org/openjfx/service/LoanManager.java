@@ -3,72 +3,69 @@ package org.openjfx.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.openjfx.App;
 import org.openjfx.dao.CopyDAO;
 import org.openjfx.dao.LoanDAO;
 import org.openjfx.dao.LoanItemDAO;
 import org.openjfx.dao.LoanTypeDAO;
-import org.openjfx.dao.MediaItemDAO;
 import org.openjfx.dao.UserTypeDAO;
 import org.openjfx.table.Copy;
 import org.openjfx.table.Loan;
-import org.openjfx.table.LoanType;
-import org.openjfx.table.MediaItem;
+import org.openjfx.table.LoanItem;
 import org.openjfx.table.User;
 
 
 public class LoanManager {
     
-    public static Loan createLoan(User user, String barcode) {
-        // Implement logic to create a loan
-        LocalDate loanDate = LocalDate.now();
-        LocalDate duedate = null;
-        int loanUserId = user.getLoanUserId();
-        int loanId = 0;
-        CopyDAO copyDAO = new CopyDAO();
-        LoanTypeDAO loanTypeDAO = new LoanTypeDAO();
-        LoanDAO loanDAO = new LoanDAO();
+    public Loan createLoan(User user, String barcode) {
         try {
+            CopyDAO copyDAO = new CopyDAO();
+            LoanTypeDAO loanTypeDAO = new LoanTypeDAO();
+            LoanDAO loanDAO = new LoanDAO();
+            LoanItemDAO loanItemDAO = new LoanItemDAO();
+
+            // Valideringar
             Copy copy = copyDAO.get(barcode);
-            int titelId = copy.getTitelId();
-            int loantime = loanTypeDAO.getLoanTime(loanTypeDAO.getLoanTypeId(titelId));
-            duedate = loanDate.plusDays(loantime);
+            if (copy == null) throw new IllegalArgumentException("Exemplaret finns inte");
+            if (copy.isUtlanad()) throw new IllegalStateException("Exemplaret är redan utlånat");
+            if (!isEligibleForLoan(user)) throw new IllegalStateException("Max antal lån uppnått");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        // Skapa nytt lån i databasen
-        //Placeholder på lokalt objekt för lån i lånid som -1 för att denna inte kommer användas ändå för display eller liknande
-        Loan loan = new Loan(1, loanUserId, loanDate, duedate, null);
-        try {
-            loanDAO.add(loan);
+            // Beräkna lånedatum
+            int loanTypeId = loanTypeDAO.getLoanTypeId(copy.getTitelId());
+            int loanTime = loanTypeDAO.getLoanTime(loanTypeId);
+            if (loanTime <= 0) throw new IllegalStateException("Kan inte låna denna typ av material");
+
+            // Skapa lån
+            Loan loan = new Loan(
+                -1, // Autogenereras av databasen
+                user.getLoanUserId(),
+                LocalDate.now(),
+                LocalDate.now().plusDays(loanTime),
+                null
+            );
+            loanDAO.add(loan); // Får autogenererat ID från databasen
+
+            // Uppdatera exemplarstatus
+            copy.setUtlanad(true);
+            copyDAO.update(copy);
+
+            // Skapa låneföremål
+            LoanItem loanItem = new LoanItem(
+                -1, // Autogenereras av databasen
+                loan.getLanId(),
+                barcode,
+                null,
+                loan.getDueDate()
+            );
+            loanItemDAO.add(loanItem);
+
             return loan;
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("Lånefel: " + e.getMessage(), e);
         }
     }
-
-    public static int getFreshLoanId() {
-        // Implement logic to get a fresh loan ID
-        LoanDAO loanDAO = new LoanDAO();
-        List<Loan> loans = new ArrayList<>();
-        try {
-            loans = loanDAO.getAll();
-            for (Loan loan : loans) {
-                if (loan.getLanId() > 0) {
-                    return loan.getLanId() + 1;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-        return 0;
-    }
-
 
     public static Copy getAvailableObjects(int titelId) {
         // Först ta fram alla exemplar av titeln
@@ -99,7 +96,7 @@ public class LoanManager {
         return null;
     }
 
-    public boolean isEligibleForLoan(User user) {
+    public static boolean isEligibleForLoan(User user) {
         /* 
          * Varje låntagare har en begränsning för hur många objekt som får lånas samtidigt.
         Maxantalet beror på vilken kategori låntagaren tillhör (student, forskare, övriga
@@ -120,20 +117,70 @@ public class LoanManager {
                 }
 
             }
-            if (listOfNotReturned.size() >= maxLoan) {
-                // Om låntagaren har fler än maxantalet lån, returnera false
-                return false;
-            } else {
-                // Om låntagaren har färre än maxantalet lån, returnera true
-                return true;
-            }
-
+            // Returnera true om låntagaren har färre än maxantalet lån, annars false
+            return listOfNotReturned.size() < maxLoan;
         } catch (Exception e) {
             e.printStackTrace();
-        
-
-        return false;
+            return false;
         }
-    }  
+    } 
+
+    public void returnLoan(User user, String barcode) {
+        try {
+            CopyDAO copyDAO = new CopyDAO();
+            LoanItemDAO loanItemDAO = new LoanItemDAO();
+            LoanDAO loanDAO = new LoanDAO();
+
+            // Validera exemplar
+            Copy copy = copyDAO.get(barcode);
+            if (copy == null) {
+                throw new IllegalArgumentException("Exemplaret finns inte");
+            }
+
+            // Validera att lånet är aktivt
+            List<LoanItem> loanItems = loanItemDAO.findByBarcode(barcode).stream()
+                .filter(li -> li.getReturnedDate() == null)
+                .collect(Collectors.toList());
+                
+            if (loanItems.isEmpty()) {
+                throw new IllegalStateException("Inget aktivt lån för detta exemplar");
+            }
+
+            for (LoanItem loanItem : loanItems) {
+                Loan loan = loanDAO.get(loanItem.getLanId());
+                if (loan == null) {
+                    throw new IllegalStateException("Lån information saknas");
+                }
+
+                // Verifiera användare
+                if (loan.getLantagarId() != user.getLoanUserId()) {
+                    throw new SecurityException("Du har inte behörighet att returnera detta lån");
+                }
+
+                // Kontrollera om redan returnerat
+                if (loan.getReturnDate() != null) {
+                    throw new IllegalStateException("Exemplaret är redan återlämnat");
+                }
+
+                // Sätt returdatum
+                LocalDate today = LocalDate.now();
+                loan.setReturnDate(today);
+                loanDAO.update(loan);
+
+                loanItem.setReturnedDate(today);
+                loanItemDAO.update(loanItem);
+            }
+
+            // Uppdatera exemplarstatus
+            copy.setUtlanad(false);
+            copyDAO.update(copy);
+
+        } catch (SecurityException | IllegalArgumentException | IllegalStateException e) {
+            // Skicka vidare specifika undantag direkt
+            throw e;}
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

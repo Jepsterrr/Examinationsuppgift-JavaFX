@@ -2,35 +2,41 @@ package org.openjfx.controller;
 
 import org.openjfx.App;
 import org.openjfx.service.LoanManager;
-import org.openjfx.table.Loan;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class CreateLoanController {
     @FXML
     private TextField barcodeInput;
-    private Button loanButton;
-    
-    
+
+    @FXML
+    private Label feedbackLabel;
 
     @FXML 
     private void initLoan() {
-        // Initialize the loan process
+        // Påbörja lånprocessen
         String barcode = barcodeInput.getText();
-        if (barcode != null && !barcode.isEmpty()) {
-            Loan createdLoan = LoanManager.createLoan(App.getCurrentUser(), barcode);
-            if (createdLoan != null) {
-                // Successfully created loan
-                System.out.println("Loan created successfully for barcode: " + barcode);
-            } else {
-                // Failed to create loan
-                System.out.println("Failed to create loan for barcode: " + barcode);
+        feedbackLabel.setVisible(true);
+
+        try {
+            if (barcode.isEmpty()) {
+                throw new IllegalArgumentException("Ange en streckkod");
             }
-            System.out.println("Loan created for barcode: " + barcode);
-        } else {
-            System.out.println("Please enter a valid barcode.");
+
+            LoanManager loanManager = new LoanManager();
+            loanManager.createLoan(App.getCurrentUser(), barcode);
+            updateFeedback("Lån skapat för: " + barcode, "green");
+            barcodeInput.clear();
+
+        } catch (Exception e) {
+            updateFeedback("" + e.getMessage(), "red");
         }
+    }
+
+    private void updateFeedback(String message, String color) {
+        feedbackLabel.setText(message);
+        feedbackLabel.setStyle("-fx-text-fill: " + color + ";");
     }
 }

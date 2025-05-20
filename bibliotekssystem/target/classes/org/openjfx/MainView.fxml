@@ -37,21 +37,6 @@
                         </Pane>
                      </graphic>
                   </Button>
-                  <Button fx:id="profileButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnProfile" prefHeight="150.0" prefWidth="150.0" visible="false" managed="false" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Profil">
-                     <graphic>
-                        <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <children>
-                              <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Gå till din profil" wrapText="true" />
-                           </children>
-                        </Pane>
-                     </graphic>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Button>
                   <Button fx:id="adminButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnAdmin" prefHeight="150.0" prefWidth="150.0" visible="false" managed="false" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Administration">
                      <graphic>
                         <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
@@ -75,6 +60,21 @@
                            </opaqueInsets>
                            <children>
                               <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Låna material via streckkod" wrapText="true" />
+                           </children>
+                        </Pane>
+                     </graphic>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="returnButton" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#btnReturn" prefHeight="150.0" prefWidth="150.0" visible="false" managed="false" style="-fx-background-color: #2C3E50; -fx-text-fill: white; -fx-font-size: 14px;" text="Returnera">
+                     <graphic>
+                        <Pane prefHeight="120.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <children>
+                              <Label layoutX="5.0" layoutY="23.0" prefHeight="75.0" prefWidth="130.0" text="Läma tillbaka material via streckkod" wrapText="true" />
                            </children>
                         </Pane>
                      </graphic>

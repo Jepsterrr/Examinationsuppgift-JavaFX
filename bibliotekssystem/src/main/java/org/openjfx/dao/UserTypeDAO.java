@@ -1,11 +1,11 @@
 package org.openjfx.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
 
 import org.openjfx.table.UserType;
 import org.openjfx.util.DBConnection;
@@ -14,7 +14,7 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
 
     @Override
     public void add(UserType ut) throws SQLException {
-        String sql = "INSERT INTO Bibblo.Användartyp(anvandarId, typNamn, MaxAntalLan) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Bibblo.Användartyp(anvandartypid, typNamn, MaxAntalLan) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, ut.getAnvandarId());
@@ -26,7 +26,7 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
 
     @Override
     public void update(UserType ut) throws SQLException {
-        String sql = "UPDATE Bibblo.Användartyp SET typNamn=?, MaxAntalLan=? WHERE anvandarId=?";
+        String sql = "UPDATE Bibblo.Användartyp SET typNamn=?, MaxAntalLan=? WHERE anvandartypid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, ut.getTypNamn());
@@ -38,7 +38,7 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM Bibblo.Användartyp WHERE anvandarId=?";
+        String sql = "DELETE FROM Bibblo.Användartyp WHERE anvandartypid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -48,14 +48,14 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
 
     @Override
     public UserType get(Integer id) throws SQLException {
-        String sql = "SELECT * FROM Bibblo.Användartyp WHERE anvandarId=?";
+        String sql = "SELECT * FROM Bibblo.Användartyp WHERE anvandartypid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new UserType(
-                      rs.getInt("anvandarId"),
+                      rs.getInt("anvandartypid"),
                       rs.getString("typNamn"),
                       rs.getInt("MaxAntalLan")
                     );
@@ -74,7 +74,7 @@ public class UserTypeDAO implements DAO<UserType, Integer> {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new UserType(
-                    rs.getInt("anvandarId"),
+                    rs.getInt("anvandartypid"),
                     rs.getString("typNamn"),
                     rs.getInt("MaxAntalLan")
                 ));

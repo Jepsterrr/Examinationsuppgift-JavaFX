@@ -1,12 +1,13 @@
 package org.openjfx.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
 
 import org.openjfx.table.LoanItem;
 import org.openjfx.util.DBConnection;
@@ -15,13 +16,19 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
 
     @Override
     public void add(LoanItem li) throws SQLException {
-        String sql = "INSERT INTO Bibblo.Låneföremål(låneFöremålId, lanId, Streckkod) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Bibblo.Låneföremål(lanId, Streckkod, returnerasSenast) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, li.getLoanItemId());
-            ps.setInt(2, li.getLanId());
-            ps.setString(3, li.getStreckkod());
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, li.getLanId());
+            ps.setString(2, li.getStreckkod());
+            ps.setDate(3, Date.valueOf(li.getDueDate()));
             ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    li.setLoanItemId(keys.getInt(1));
+                }
+            }
         }
     }
 
@@ -94,6 +101,21 @@ public class LoanItemDAO implements DAO<LoanItem, Integer> {
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, lanId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(get(rs.getInt("låneFöremålId")));
+                }
+            }
+        }
+        return list;
+    }
+
+    public List<LoanItem> findByBarcode(String barcode) throws SQLException {
+        List<LoanItem> list = new ArrayList<>();
+        String sql = "SELECT låneFöremålId FROM Bibblo.Låneföremål WHERE Streckkod=?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, barcode);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(get(rs.getInt("låneFöremålId")));
