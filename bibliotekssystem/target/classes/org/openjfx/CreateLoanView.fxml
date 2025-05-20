@@ -50,6 +50,22 @@
             </VBox.margin>
         </Label>
 
+        <VBox fx:id="receiptBox" visible="false" spacing="5" style="-fx-border-color: #ccc; -fx-border-width:1; -fx-padding:10;">
+        <Label text="Kvitto" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+          <HBox spacing="10">
+            <Label text="Låntagare-ID:"/>
+            <Label fx:id="loanUserIdLabel"/>
+          </HBox>
+          <HBox spacing="10">
+            <Label text="Lån-ID:"/>
+            <Label fx:id="loanIdLabel"/>
+          </HBox>
+          <HBox spacing="10">
+            <Label text="Datum:"/>
+            <Label fx:id="dateLabel"/>
+          </HBox>
+      </VBox>
+
       </children>
     </VBox>
   </center>
