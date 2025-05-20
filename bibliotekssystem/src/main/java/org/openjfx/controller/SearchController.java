@@ -12,12 +12,15 @@ import org.openjfx.table.MediaItem;
 import org.openjfx.util.DetailHelper;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -68,7 +71,12 @@ public class SearchController {
     @FXML
     private ComboBox keywordCombo;
 
+    @FXML
+    private Button copyBarcodeButton;
+
     private MediaItem currentMediaItemInDialog; // Antag att din ListView visar MediaItem-objekt
+
+    private Copy currentRecommendedCopy;
 
     @FXML
     public void initialize() {
@@ -192,9 +200,12 @@ public class SearchController {
         dialogItemTypeLabel.setText("Typ: " + detailsMap.getOrDefault("Typ", "Okänt")); // Exempel
         dialogItemISBNLabel.setText("ISBN: " + detailsMap.getOrDefault("ISBN", "Okänt")); // Exempel
         dialogItemDescriptionText.setText("Beskrivning: " + item.getDetails()); // Exempel
-
+        
         detailDialogPane.setVisible(true);
         detailDialogPane.setManaged(true);
+
+        copyBarcodeButton.setVisible(false);
+        copyBarcodeButton.setManaged(false);
 
         // Gör bakgrunden (searchViewVBox) mindre framträdande
         searchViewVBox.setOpacity(0.5);
@@ -213,18 +224,27 @@ public class SearchController {
         searchViewVBox.setDisable(false);
     }
 
-        @FXML
+    @FXML
     private void handleDialogBorrowAction() {
         if (currentMediaItemInDialog != null) {
             System.out.println("Försöker låna: " + currentMediaItemInDialog.getTitle());
             Copy suggestion = LoanManager.getAvailableObjects(currentMediaItemInDialog.getTitleId());
+            currentRecommendedCopy = suggestion;
             System.out.println("TitelID: " + currentMediaItemInDialog.getTitleId());
             if (suggestion != null) {
                 System.out.println("Förslag på exemplar: " + suggestion.getStreckkod());
                 dialogItemDescriptionText.setText("Objekt med streckkod: " + suggestion.getStreckkod() + " är tillgänglig för utlån. Du hittar den i sektion " + suggestion.getPlatsId());
+                if (copyBarcodeButton != null) {
+                    copyBarcodeButton.setVisible(true);
+                    copyBarcodeButton.setManaged(true);
+                }
             } else {
                 System.out.println("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
                 dialogItemDescriptionText.setText("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
+                if (copyBarcodeButton != null) {
+                    copyBarcodeButton.setVisible(false);
+                    copyBarcodeButton.setManaged(false);
+                }
             }
             // Här implementerar du logiken för att låna boken/mediet.
             // Detta kan involvera anrop till en LoanService eller LoanDAO.
@@ -238,5 +258,68 @@ public class SearchController {
             // }
         }
     }
+
+    @FXML
+    private void handleCopyBarcode() {
+        if (currentRecommendedCopy != null && currentRecommendedCopy.getStreckkod() != null) {
+            final Clipboard clipboard = Clipboard.getSystemClipboard();
+            final ClipboardContent content = new ClipboardContent();
+            content.putString(currentRecommendedCopy.getStreckkod());
+            clipboard.setContent(content);
+
+            // Ge feedback till användaren
+            if (dialogItemDescriptionText != null) {
+                dialogItemDescriptionText.setText("Streckkod '" + currentRecommendedCopy.getStreckkod() + "' kopierad till urklipp!");
+                try {
+                    // Vänta en stund för att låta användaren se meddelandet
+                    //Thread.sleep(1000);
+                    App.setRoot("CreateLoanView");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+              
+            } else { // Fallback om label inte finns
+                new Alert(Alert.AlertType.INFORMATION, "Streckkod kopierad!").showAndWait();
+            }
+            // Du kan välja att dölja kopieraknappen igen efter klick eller låta den vara kvar
+            // if (kopieraStreckkodButton != null) kopieraStreckkodButton.setDisable(true);
+
+        } else {
+            if (dialogItemDescriptionText != null) {
+                dialogItemDescriptionText.setText("Ingen streckkod att kopiera.");
+            } else {
+                 new Alert(Alert.AlertType.WARNING, "Ingen streckkod tillgänglig att kopiera.").showAndWait();
+            }
+        }
+    }
+
+        private void setDialogToInitialDetailState() {
+        // Visa ursprungliga detalj-labels
+        if (dialogItemAuthorLabel != null) dialogItemAuthorLabel.setVisible(true);
+        // ... (visa andra ursprungliga detail-labels om du dolt dem) ...
+        if (dialogItemDescriptionText != null) dialogItemDescriptionText.setVisible(true);
+
+
+        // Dölj rekommendations-label och rensa dess text
+        if (dialogItemDescriptionText != null) {
+            dialogItemDescriptionText.setText("");
+            dialogItemDescriptionText.setVisible(false);
+            dialogItemDescriptionText.setManaged(false);
+        }
+
+        // Visa "Kolla tillgänglighet"-knapp, dölj "Kopiera"-knapp
+        if (dialogBorrowButton != null) {
+            dialogBorrowButton.setVisible(true);
+            dialogBorrowButton.setManaged(true);
+            dialogBorrowButton.setDisable(false); // Se till att den är aktiv
+        }
+        if (copyBarcodeButton != null) {
+            copyBarcodeButton.setVisible(false);
+            copyBarcodeButton.setManaged(false);
+        }
+    }
+
+
 }
 

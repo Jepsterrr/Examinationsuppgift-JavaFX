@@ -85,7 +85,8 @@
                 <Insets top="20.0" />
               </VBox.margin>
               <children>
-                <Button fx:id="dialogBorrowButton" mnemonicParsing="false" onAction="#handleDialogBorrowAction" prefHeight="30.0" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Låna" />
+                <Button fx:id="dialogBorrowButton" mnemonicParsing="false" onAction="#handleDialogBorrowAction" prefHeight="30.0" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Kolla tillgänglighet" />
+                <Button fx:id="copyBarcodeButton" mnemonicParsing="false" onAction="#handleCopyBarcode" prefHeight="30.0" style="-fx-background-color: #2980B9; -fx-text-fill: white;" text="Kopiera Streckkod och gå till lån" />
                 <Button fx:id="dialogBackButton" mnemonicParsing="false" onAction="#handleDialogBackAction" prefHeight="30.0" text="Gå tillbaka" />
               </children>
             </HBox>
