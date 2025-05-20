@@ -17,11 +17,12 @@ public class LoanDAO implements DAO<Loan, Integer> {
 
     @Override
     public void add(Loan loan) throws SQLException {
-        String sql = "INSERT INTO Bibblo.Lån(lantagarId, låneDatum) VALUES (?, ?)";
+        String sql = "INSERT INTO Bibblo.Lån(lantagarId, låneDatum, aterlamningsdatum) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, loan.getLantagarId());
             ps.setDate(2, Date.valueOf(loan.getLoanDate()));
+            ps.setDate(3, Date.valueOf(loan.getDueDate()));
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {

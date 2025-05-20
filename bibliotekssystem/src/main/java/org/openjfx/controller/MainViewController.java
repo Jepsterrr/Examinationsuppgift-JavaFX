@@ -16,6 +16,9 @@ public class MainViewController {
     private Button adminButton;
 
     @FXML
+    private Button loanButton;
+
+    @FXML
     public void initialize() {
         updateState();
     }
@@ -28,6 +31,8 @@ public class MainViewController {
         adminButton.setManaged(isAdmin);
         profileButton.setVisible(loggedIn && !isAdmin);
         profileButton.setManaged(loggedIn && !isAdmin);
+        loanButton.setVisible(loggedIn && !isAdmin);
+        loanButton.setManaged(loggedIn && !isAdmin);
     }
 
     @FXML
@@ -54,5 +59,10 @@ public class MainViewController {
     @FXML
     private void btnAdmin() throws IOException {
         App.setRoot("AdminView");
+    }
+
+    @FXML
+    private void btnLoan() throws IOException {
+        App.setRoot("CreateLoanView");
     }
 }
