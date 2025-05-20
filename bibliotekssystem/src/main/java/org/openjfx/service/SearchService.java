@@ -7,6 +7,7 @@ import java.util.List;
 import org.openjfx.dao.ArticleDAO;
 import org.openjfx.dao.BookDAO;
 import org.openjfx.dao.DvdDAO;
+import org.openjfx.dao.KeywordDAO;
 import org.openjfx.table.MediaItem;
 
 public class SearchService {
@@ -29,5 +30,9 @@ public class SearchService {
         allMedia.addAll(dvdDAO.getAll());
         allMedia.addAll(artDAO.getAll());
         return allMedia;
+    }
+
+    public List<String> getAllKeywords() throws SQLException {
+        return new KeywordDAO().getAllKeywords();
     }
 }

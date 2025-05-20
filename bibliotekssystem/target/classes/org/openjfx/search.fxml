@@ -15,6 +15,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ComboBox?>
 
 <BorderPane minHeight="640.0" minWidth="820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.SearchController">
   <top>
@@ -30,12 +31,13 @@
           <children>
             <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="780.0" spacing="30.0">
               <children>
-                <TextField fx:id="searchBox" onAction="#checkEmpty" prefHeight="30.0" prefWidth="377.0" promptText="Sök på titel, författare, ISBN..." HBox.hgrow="ALWAYS">
+                <TextField fx:id="searchBox" onAction="#checkEmpty" prefHeight="30.0" prefWidth="377.0" promptText="Sök på titel, författare, ISBN, nyckelord..." HBox.hgrow="ALWAYS">
                   <HBox.margin>
                     <Insets />
                   </HBox.margin>
                 </TextField>
                 <Button fx:id="searchButton" mnemonicParsing="false" onAction="#updateSearch" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color:#3498DB; -fx-text-fill:white;" text="Sök" />
+                <ComboBox fx:id="keywordCombo" prefWidth="150.0" promptText="Filtrera nyckelord…" onAction="#applyKeywordFilter" />
               </children>
               <VBox.margin>
                 <Insets bottom="10.0" />
