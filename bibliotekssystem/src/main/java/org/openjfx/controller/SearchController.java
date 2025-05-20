@@ -3,7 +3,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.openjfx.service.SearchService;
+import org.openjfx.table.Copy;
 import org.openjfx.table.MediaItem;
+import org.openjfx.util.DetailHelper;
 import org.openjfx.App;
 
 import javafx.fxml.FXML;
@@ -15,6 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.openjfx.service.LoanManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SearchController {
 
@@ -112,23 +118,24 @@ public class SearchController {
 
     private void showDetailDialog(MediaItem item) {
     currentMediaItemInDialog = item; // Spara referens till objektet
-
+    System.out.println(item.getDetails());
+    Map <String, String> detailsMap = new HashMap<>();
+    detailsMap = DetailHelper.parseItemDetails(item.getDetails());
     // Fyll label-texterna med information från 'item'
     dialogItemTitleLabel.setText(item.getTitle());
     // Antag att MediaItem har getters för dessa:
-    dialogItemAuthorLabel.setText("Författare: "); // Exempel
-    dialogItemYearLabel.setText("Utgivningsår: ");
-    dialogItemTypeLabel.setText("Typ: ");
-    dialogItemISBNLabel.setText("ISBN: " );
-    dialogItemDescriptionText.setText("Beskrivning: ");
-    // ... fyll fler fält ...
+    dialogItemAuthorLabel.setText("Författare: " + detailsMap.getOrDefault("Författare", "Okänd")); // Exempel
+    dialogItemYearLabel.setText("Utgivningsår: " + detailsMap.getOrDefault("Utgivningsår", "Okänt")); // Exempel
+    dialogItemTypeLabel.setText("Typ: " + detailsMap.getOrDefault("Typ", "Okänt")); // Exempel
+    dialogItemISBNLabel.setText("ISBN: " + detailsMap.getOrDefault("ISBN", "Okänt")); // Exempel
+    dialogItemDescriptionText.setText("Beskrivning: " + item.getDetails()); // Exempel
 
     detailDialogPane.setVisible(true);
     detailDialogPane.setManaged(true);
 
-    // Valfritt: Gör bakgrunden (searchViewVBox) mindre framträdande
-    // searchViewVBox.setOpacity(0.5);
-    // searchViewVBox.setDisable(true); // Inaktivera interaktion med bakgrunden
+    // Gör bakgrunden (searchViewVBox) mindre framträdande
+    searchViewVBox.setOpacity(0.5);
+    searchViewVBox.setDisable(true); // Inaktivera interaktion med bakgrunden
     }
 
 
@@ -138,15 +145,24 @@ public class SearchController {
         detailDialogPane.setManaged(false);
         currentMediaItemInDialog = null; // Rensa referens
 
-        // Valfritt: Återställ bakgrunden
-        // searchViewVBox.setOpacity(1.0);
-        // searchViewVBox.setDisable(false);
+        // Återställ bakgrunden
+        searchViewVBox.setOpacity(1.0);
+        searchViewVBox.setDisable(false);
     }
 
         @FXML
     private void handleDialogBorrowAction() {
         if (currentMediaItemInDialog != null) {
             System.out.println("Försöker låna: " + currentMediaItemInDialog.getTitle());
+            Copy suggestion = LoanManager.getAvailableObjects(currentMediaItemInDialog.getTitleId());
+            System.out.println("TitelID: " + currentMediaItemInDialog.getTitleId());
+            if (suggestion != null) {
+                System.out.println("Förslag på exemplar: " + suggestion.getStreckkod());
+                dialogItemDescriptionText.setText("Objekt med streckkod: " + suggestion.getStreckkod() + " är tillgänglig för utlån. Du hittar den i sektion " + suggestion.getPlatsId());
+            } else {
+                System.out.println("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
+                dialogItemDescriptionText.setText("Inga tillgängliga exemplar för: " + currentMediaItemInDialog.getTitle());
+            }
             // Här implementerar du logiken för att låna boken/mediet.
             // Detta kan involvera anrop till en LoanService eller LoanDAO.
             // Exempel:

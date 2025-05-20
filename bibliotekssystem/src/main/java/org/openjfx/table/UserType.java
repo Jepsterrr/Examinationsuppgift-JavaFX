@@ -1,22 +1,22 @@
 package org.openjfx.table;
 
 public class UserType {
-    private int anvandarId;
+    private int anvandartypId;
     private String typNamn;
     private int maxAntalLan;
 
     public UserType(int anvandarId, String typNamn, int maxAntalLan) {
-        this.anvandarId = anvandarId;
+        this.anvandartypId = anvandarId;
         this.typNamn = typNamn;
         this.maxAntalLan = maxAntalLan;
     }
 
     public int getAnvandarId() {
-        return anvandarId;
+        return anvandartypId;
     }
 
     public void setAnvandarId(int anvandarId) {
-        this.anvandarId = anvandarId;
+        this.anvandartypId = anvandarId;
     }
 
     public String getTypNamn() {

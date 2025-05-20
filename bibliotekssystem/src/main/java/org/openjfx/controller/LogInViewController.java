@@ -43,6 +43,7 @@ public class LogInViewController {
             User foundUser = userDAO.findByUsername(user);
             if (foundUser != null && foundUser.getPassword().equals(pass)) {
                 // Inloggning lyckad: byt vy och anropa handleLogIn
+                System.out.println("loanUserId: " + Integer.toString(foundUser.getLoanUserId()) + "loanTypeId " + foundUser.getloanTypeId());
                 App.setCurrentUser(foundUser);
                 App.setRoot("MainView");
             } else {

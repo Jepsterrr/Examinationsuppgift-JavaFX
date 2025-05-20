@@ -3,6 +3,8 @@ module org.openjfx {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires java.sql;
+    requires com.zaxxer.hikari;
+    requires org.slf4j;
 
     opens org.openjfx to javafx.fxml;
     exports org.openjfx;

@@ -49,15 +49,15 @@ public class UserDAO implements DAO<User, Integer> {
 
     @Override
     public User get(Integer key) throws SQLException {
-        String sql = "SELECT * FROM Bibblo.låntagare WHERE lantagareId = ?";
+        String sql = "SELECT * FROM Bibblo.låntagare WHERE lantagarId = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, key);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new User(
-                        rs.getInt("lantagareId"),
-                        rs.getInt("userId"),
+                        rs.getInt("lantagarId"),
+                        rs.getInt("anvadrtypId"),
                         rs.getString("fNamn"),
                         rs.getString("eNamn"),
                         rs.getString("epost"),
@@ -80,10 +80,10 @@ public class UserDAO implements DAO<User, Integer> {
             try (ResultSet rs = ps.executeQuery()) { 
                 while (rs.next()) {
                     users.add(new User(
-                        rs.getInt("lantagareId"),
-                        rs.getInt("userId"),
-                        rs.getString("fornamn"),
-                        rs.getString("efternamn"),
+                        rs.getInt("lantagarId"),
+                        rs.getInt("anvandartypid"),
+                        rs.getString("fnamn"),
+                        rs.getString("enamn"),
                         rs.getString("epost"),
                         rs.getString("anvandarTypNamn"),
                         rs.getString("anvandarnamn"),
@@ -96,7 +96,7 @@ public class UserDAO implements DAO<User, Integer> {
     }
 
     public User findByUsername(String username) throws SQLException {
-        String sql = "SELECT lantagarId, anvandarId, fnamn, enamn, epost, anvandarTypNamn, anvandarnamn, losenord " +
+        String sql = "SELECT lantagarId, anvandartypid, fnamn, enamn, epost, anvandarTypNamn, anvandarnamn, losenord " +
                      "FROM Bibblo.Låntagare WHERE anvandarnamn = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -105,7 +105,7 @@ public class UserDAO implements DAO<User, Integer> {
                 if (rs.next()) {
                     return new User(
                         rs.getInt("lantagarId"),
-                        rs.getInt("anvandarId"),
+                        rs.getInt("anvandartypId"),
                         rs.getString("fnamn"),
                         rs.getString("enamn"),
                         rs.getString("epost"),

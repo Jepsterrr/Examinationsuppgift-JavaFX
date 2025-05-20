@@ -1,4 +1,35 @@
-c:\Users\jespe\OneDrive\Skrivbord\VsCode\Examinationsuppgift 1 - JavaFX\bibliotekssystem\src\main\java\org\openjfx\App.java
-c:\Users\jespe\OneDrive\Skrivbord\VsCode\Examinationsuppgift 1 - JavaFX\bibliotekssystem\src\main\java\org\openjfx\PrimaryController.java
-c:\Users\jespe\OneDrive\Skrivbord\VsCode\Examinationsuppgift 1 - JavaFX\bibliotekssystem\src\main\java\module-info.java
-c:\Users\jespe\OneDrive\Skrivbord\VsCode\Examinationsuppgift 1 - JavaFX\bibliotekssystem\src\main\java\org\openjfx\SecondaryController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/module-info.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/Article.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/UserDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/DVD.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/service/SearchService.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/MediaItemDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/service/LoanManager.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/UserTypeDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/ArticleDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/App.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/UserType.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/EditViewController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/User.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/util/DBConnection.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/CreateLoanController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/util/DetailHelper.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/BookDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/NavBarController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/LoanItem.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/LoanItemDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/DAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/SearchController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/MediaItem.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/LoanTypeDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/Loan.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/LogInViewController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/DvdDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/CopyDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/LoanOverview.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/dao/LoanDAO.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/MainViewController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/AdminViewController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/controller/ProfileViewController.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/Copy.java
+/Users/tobiasbystrom/Desktop/Bibliotekssystem/Examinationsuppgift-JavaFX/bibliotekssystem/src/main/java/org/openjfx/table/Book.java
