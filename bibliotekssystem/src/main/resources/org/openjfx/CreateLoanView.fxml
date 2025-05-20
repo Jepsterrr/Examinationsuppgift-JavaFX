@@ -64,6 +64,10 @@
             <Label text="Datum:"/>
             <Label fx:id="dateLabel"/>
           </HBox>
+          <HBox spacing="10">
+            <Label text="Returneras senast:"/>
+            <Label fx:id="dueDateLabel"/>
+          </HBox>
       </VBox>
 
       </children>

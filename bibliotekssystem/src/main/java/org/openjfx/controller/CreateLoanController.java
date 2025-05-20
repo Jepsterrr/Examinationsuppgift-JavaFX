@@ -30,6 +30,9 @@ public class CreateLoanController {
     @FXML
     private Label dateLabel;
 
+    @FXML
+    private Label dueDateLabel;
+
     @FXML 
     private void initLoan() {
         // Påbörja lånprocessen
@@ -62,6 +65,7 @@ public class CreateLoanController {
         loanIdLabel.setText(String.valueOf(loan.getLanId()));
         loanUserIdLabel.setText(String.valueOf(loan.getLantagarId()));
         dateLabel.setText(LocalDate.now().toString());
+        dueDateLabel.setText(loan.getDueDate().toString());
         receiptBox.setVisible(true);
     }
 }
