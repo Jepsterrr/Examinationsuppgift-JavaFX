@@ -1,5 +1,7 @@
 package org.openjfx.controller;
 
+import java.time.LocalDate;
+
 import org.openjfx.App;
 import org.openjfx.service.LoanManager;
 import org.openjfx.table.Loan;
@@ -7,6 +9,7 @@ import org.openjfx.table.Loan;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class CreateLoanController {
     @FXML
@@ -14,6 +17,18 @@ public class CreateLoanController {
 
     @FXML
     private Label feedbackLabel;
+
+    @FXML
+    private VBox receiptBox;
+
+    @FXML
+    private Label loanUserIdLabel;
+
+    @FXML
+    private Label loanIdLabel;
+
+    @FXML
+    private Label dateLabel;
 
     @FXML 
     private void initLoan() {
@@ -27,9 +42,11 @@ public class CreateLoanController {
             }
 
             LoanManager loanManager = new LoanManager();
-            Loan createdLoan = loanManager.createLoan(App.getCurrentUser(), barcode);
-            updateFeedback("Lån skapat för: " + barcode + "Retuneras senast: " + createdLoan.getDueDate(), "green");
+            Loan createdLoanId = loanManager.createLoan(App.getCurrentUser(), barcode);;
+            updateFeedback("Lån skapat för: " + barcode, "green");
             barcodeInput.clear();
+
+            showReceipt(createdLoanId);
 
         } catch (Exception e) {
             updateFeedback("" + e.getMessage(), "red");
@@ -39,5 +56,12 @@ public class CreateLoanController {
     private void updateFeedback(String message, String color) {
         feedbackLabel.setText(message);
         feedbackLabel.setStyle("-fx-text-fill: " + color + ";");
+    }
+
+    private void showReceipt(Loan loan) {
+        loanIdLabel.setText(String.valueOf(loan.getLanId()));
+        loanUserIdLabel.setText(String.valueOf(loan.getLantagarId()));
+        dateLabel.setText(LocalDate.now().toString());
+        receiptBox.setVisible(true);
     }
 }
