@@ -12,6 +12,7 @@ import org.openjfx.service.SearchService;
 import org.openjfx.table.Article;
 import org.openjfx.table.Book;
 import org.openjfx.table.DVD;
+import org.openjfx.table.LoanType;
 import org.openjfx.table.MediaItem;
 
 import javafx.fxml.FXML;
@@ -45,32 +46,45 @@ public class EditViewController {
     private final SearchService service = new SearchService();
     private final BookDAO bookDao = new BookDAO();
     private final DvdDAO dvdDao = new DvdDAO();
-    private final ArticleDAO articleDao = new ArticleDAO(); // Retain for potential future use
+    private final ArticleDAO articleDao = new ArticleDAO();
 
     // Dynamiskt skapade fält
-    private TextField fldTitleId, fldTitle, fldLoanTypeId, fldExCount, fldCreatorNames;
+    private TextField fldTitleId, fldTitle, fldExCount, fldCreatorNames;
+    private ChoiceBox<LoanType> loanTypeSelector;
     private TextField fldIsbn, fldPages, fldPublisherId;
     private TextField fldDuration;
     private TextField fldArticlePages, fldJournal;
 
     @FXML
     public void initialize() throws SQLException {
-        // 1) Initiera typväljare
+        // 1) Initiera typväljare och lånetypväljare
         typeSelector.getItems().addAll("Book","DVD","Article");
         typeSelector.getSelectionModel().selectFirst();
         typeSelector.getSelectionModel().selectedItemProperty().addListener((obs,oldType,newType)-> {
-            current = null;
             buildForm();
+            if (current != null) {
+                fillForm(current);
+            }
         });
+
+        loanTypeSelector = new ChoiceBox<>();
+        loanTypeSelector.getItems().addAll(LoanType.values());
+        loanTypeSelector.getSelectionModel().selectFirst();
 
         // 2) Initiera listView
         reloadList();
         listView.getSelectionModel().selectedItemProperty().addListener((obs,oldItem,newItem)->{
             current = newItem;
             // sätt rätt typ i selector
-            if (newItem instanceof Book) typeSelector.setValue("Book");
-            else if (newItem instanceof DVD) typeSelector.setValue("DVD");
-            else if (newItem instanceof Article) typeSelector.setValue("Article");
+            if (newItem instanceof Book) {
+                typeSelector.setValue("Book");
+            }
+            else if (newItem instanceof DVD) {
+                typeSelector.setValue("DVD");
+            }
+            else if (newItem instanceof Article) {
+                typeSelector.setValue("Article");
+            }
             buildForm();
             if (newItem!=null) fillForm(newItem);
         });
@@ -117,6 +131,10 @@ public class EditViewController {
         fldExCount = addField("Antal exemplar:");
         fldCreatorNames = addField("Kreatör:");
 
+        // Lånetyp
+        Label ltLabel = new Label("Lånetyp:");
+        formBox.getChildren().addAll(ltLabel, loanTypeSelector);
+
         // Typ-specifika fält
         switch(typeSelector.getValue()) {
             case "Book":
@@ -147,6 +165,11 @@ public class EditViewController {
         fldExCount.setText(String.valueOf(m.getAntalExemplar()));
         fldCreatorNames.setText(m.getCreatorNames());
 
+        LoanType lt = LoanType.fromId(m.getLoanTypeId());
+        if (lt != null) {
+            loanTypeSelector.getSelectionModel().select(lt);
+        }
+
         if (m instanceof Book) {
             Book b = (Book) m;
             fldIsbn.setText(b.getIsbn());
@@ -175,7 +198,7 @@ public class EditViewController {
         try {
             int id = Integer.parseInt(fldTitleId.getText().trim());
             String title = fldTitle.getText();
-            int loanTypeId = Integer.parseInt(fldLoanTypeId.getText().trim());
+            int loanTypeId = loanTypeSelector.getValue().getId();
             int exCount = Integer.parseInt(fldExCount.getText().trim());
 
             switch (typeSelector.getValue()) {

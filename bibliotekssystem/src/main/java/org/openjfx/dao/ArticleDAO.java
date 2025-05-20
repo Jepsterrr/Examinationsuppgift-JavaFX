@@ -1,11 +1,11 @@
 package org.openjfx.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
 
 import org.openjfx.table.Article;
 import org.openjfx.util.DBConnection;
@@ -111,7 +111,7 @@ public class ArticleDAO implements MediaItemDAO<Article> {
 
     @Override
     public List<Article> searchByTerm(String term) throws SQLException {
-        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
+        String sql = "SELECT t.titelId, t.titel, t.lanetypId, t.antalExemplar, a.artikelSidor, a.tidsskrift, COALESCE(string_agg(k.fNamn || ' ' || k.eNamn, ', ' ORDER BY k.eNamn), '') AS kreatorer\n"
                     + "FROM Bibblo.Titel t\n"
                     + "JOIN Bibblo.Artikel a ON a.titelId = t.titelId\n"
                     + "LEFT JOIN Bibblo.Kreatörskap ks ON ks.titelId = t.titelId\n"
