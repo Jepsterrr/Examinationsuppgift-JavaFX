@@ -2,6 +2,7 @@ package org.openjfx.controller;
 
 import org.openjfx.App;
 import org.openjfx.service.LoanManager;
+import org.openjfx.table.Loan;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,8 +27,8 @@ public class CreateLoanController {
             }
 
             LoanManager loanManager = new LoanManager();
-            loanManager.createLoan(App.getCurrentUser(), barcode);
-            updateFeedback("Lån skapat för: " + barcode, "green");
+            Loan createdLoan = loanManager.createLoan(App.getCurrentUser(), barcode);
+            updateFeedback("Lån skapat för: " + barcode + "Retuneras senast: " + createdLoan.getDueDate(), "green");
             barcodeInput.clear();
 
         } catch (Exception e) {
